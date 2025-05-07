@@ -52,16 +52,7 @@ subprojects {
             }
         }
 
-        splits {
-            abi {
-                isEnable = true
-                reset()
-                include("arm64-v8a", "x86_64", "armeabi-v7a", "x86")
-                isUniversalApk = true
-            }
-        }
-
-        ndkVersion = "28.0.13004108"
+        ndkVersion = "28.1.13356709"
 
         compileSdkVersion(35)
 
