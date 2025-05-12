@@ -15,7 +15,7 @@ require (
 	github.com/cloudflare/circl v1.3.7 // indirect
 	github.com/coreos/go-iptables v0.8.0 // indirect
 	github.com/dlclark/regexp2 v1.11.5 // indirect
-	github.com/ebitengine/purego v0.8.2 // indirect
+	github.com/ebitengine/purego v0.8.3-0.20250507171810-1638563e3615 // indirect
 	github.com/enfein/mieru/v3 v3.13.0 // indirect
 	github.com/ericlagergren/aegis v0.0.0-20250325060835-cd0defd64358 // indirect
 	github.com/ericlagergren/polyval v0.0.0-20220411101811-e25bc10ba391 // indirect
@@ -51,7 +51,7 @@ require (
 	github.com/metacubex/fswatch v0.1.1 // indirect
 	github.com/metacubex/gopacket v1.1.20-0.20230608035415-7e2f98a3e759 // indirect
 	github.com/metacubex/gvisor v0.0.0-20250324165734-5857f47bd43b // indirect
-	github.com/metacubex/mihomo v1.19.5 // indirect
+	github.com/metacubex/mihomo v1.19.6 // indirect
 	github.com/metacubex/nftables v0.0.0-20250503052935-30a69ab87793 // indirect
 	github.com/metacubex/quic-go v0.51.1-0.20250423035655-e3948b36ce14 // indirect
 	github.com/metacubex/randv2 v0.2.0 // indirect
