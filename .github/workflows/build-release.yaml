@@ -28,8 +28,6 @@ jobs:
       - name: Setup Gradle
         if: success()
         uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-home-cache-cleanup: true
 
       - name: Setup ninja
         uses: seanmiddleditch/gha-setup-ninja@v6
