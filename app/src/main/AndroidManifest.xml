@@ -14,7 +14,7 @@
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -184,12 +184,12 @@
         <service
             android:name=".LogcatService"
             android:exported="false"
-            android:foregroundServiceType="dataSync"
+            android:foregroundServiceType="specialUse"
             android:label="@string/clash_logcat" />
         <service
             android:name=".TileService"
             android:exported="true"
-            android:foregroundServiceType="dataSync"
+            android:foregroundServiceType="specialUse"
             android:icon="@drawable/ic_logo_service"
             android:label="@string/launch_name"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">

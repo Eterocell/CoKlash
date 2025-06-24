@@ -26,10 +26,10 @@ subprojects {
             }
 
             minSdk = 21
-            targetSdk = 35
-            buildToolsVersion = "35.0.1"
+            targetSdk = 36
+            buildToolsVersion = "36.0.0"
 
-            versionName = "3.0.0-alpha08"
+            versionName = "3.0.0-alpha09"
             versionCode = "03000008".toInt()
 
             resValue("string", "release_name", "v$versionName")
@@ -54,7 +54,7 @@ subprojects {
 
         ndkVersion = "28.1.13356709"
 
-        compileSdkVersion(35)
+        compileSdkVersion(36)
 
         if (isApp) {
             packagingOptions {
