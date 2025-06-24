@@ -178,15 +178,15 @@ class ProfileManager(
                         when {
                             info[0].contains("upload") && info[1].isNotEmpty() ->
                                 upload =
-                                    BigDecimal(info[1]).longValueExact()
+                                    BigDecimal(info[1].split('.').first()).longValueExact()
 
                             info[0].contains("download") && info[1].isNotEmpty() ->
                                 download =
-                                    BigDecimal(info[1]).longValueExact()
+                                    BigDecimal(info[1].split('.').first()).longValueExact()
 
                             info[0].contains("total") && info[1].isNotEmpty() ->
                                 total =
-                                    BigDecimal(info[1]).longValueExact()
+                                    BigDecimal(info[1].split('.').first()).longValueExact()
 
                             info[0].contains("expire") && info[1].isNotEmpty() -> {
                                 if (info[1].isNotEmpty()) {
