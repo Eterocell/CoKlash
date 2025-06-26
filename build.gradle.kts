@@ -20,9 +20,6 @@ subprojects {
     val isHideApi = name == "hideapi"
 
     plugins.apply(if (isApp) "com.android.application" else "com.android.library")
-    if (!isHideApi) {
-        plugins.apply("org.jetbrains.kotlin.plugin.compose")
-    }
     extensions.configure<BaseExtension> {
         defaultConfig {
             if (isApp) {
@@ -30,11 +27,11 @@ subprojects {
             }
 
             minSdk = 21
-            targetSdk = 35
-            buildToolsVersion = "35.0.1"
+            targetSdk = 36
+            buildToolsVersion = "36.0.0"
 
-            versionName = "3.0.0-alpha08"
-            versionCode = "03000008".toInt()
+            versionName = "3.0.0-beta01"
+            versionCode = "03000010".toInt()
 
             if (!isHideApi) {
                 vectorDrawables {
@@ -64,7 +61,7 @@ subprojects {
 
         ndkVersion = "28.1.13356709"
 
-        compileSdkVersion(35)
+        compileSdkVersion(36)
 
         if (isApp) {
             packagingOptions {
@@ -162,6 +159,23 @@ subprojects {
             }
         }
 
-        dependencies.add("coreLibraryDesugaring", "com.android.tools:desugar_jdk_libs:2.1.5")
+        val libs: VersionCatalog = rootProject.extensions.getByType<VersionCatalogsExtension>().named("libs")
+
+        dependencies {
+            add("coreLibraryDesugaring", libs.findLibrary("android-desugar-jdk-libs").get())
+        }
+
+        if (!isHideApi) {
+            plugins.apply("org.jetbrains.kotlin.plugin.compose")
+
+            dependencies {
+                val composeBom = libs.findLibrary("androidx.compose.bom").get()
+                add("implementation", platform(composeBom))
+                add("testImplementation", platform(composeBom))
+                add("androidTestImplementation", platform(composeBom))
+                add("implementation", libs.findLibrary("androidx.compose.ui.tooling.preview").get())
+                add("debugImplementation", libs.findLibrary("androidx.compose.ui.tooling").get())
+            }
+        }
     }
 }

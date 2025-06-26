@@ -9,7 +9,6 @@
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
@@ -50,8 +49,12 @@
         <service
             android:name=".ProfileWorker"
             android:exported="false"
-            android:foregroundServiceType="dataSync"
-            android:process=":background" />
+            android:foregroundServiceType="specialUse"
+            android:process=":background">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Background profile update requires specialUse foreground service." />
+        </service>
 
         <provider
             android:name=".FilesProvider"

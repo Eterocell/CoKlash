@@ -4,6 +4,7 @@ build/
 /app/premium/release
 /captures
 .kotlin/
+.claude/
 
 # Ignore Gradle GUI config
 gradle-app.setting

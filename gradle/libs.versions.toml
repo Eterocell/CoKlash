@@ -1,12 +1,13 @@
 [versions]
-agp = "8.10.0"
-kotlin = "2.1.21"
-ksp = "2.1.21-2.0.1"
+android-desugar-jdk-libs = "2.1.5"
+agp = "8.11.0"
+kotlin = "2.2.0"
+ksp = "2.2.0-2.0.2"
 coroutine = "1.10.2"
 coreKtx = "1.16.0"
 androidx-activity = "1.10.1"
-fragment = "1.8.7"
-appcompat = "1.7.0"
+fragment = "1.8.8"
+appcompat = "1.7.1"
 coordinator = "1.3.0"
 okhttp = "4.12.0"
 recyclerview = "1.4.0"
@@ -14,14 +15,14 @@ viewpager = "1.1.0"
 material = "1.12.0"
 serialization = "1.8.1"
 kaidl = "1.15"
-room = "2.7.1"
+room = "2.7.2"
 multiprocess = "1.0.0"
-spotless = "7.0.3"
-androidx-compose-bom = "2025.05.01"
+spotless = "7.0.4"
+androidx-compose-bom = "2025.06.01"
 androidx-navigation = "2.9.0"
 
 [libraries]
-
+android-desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "android-desugar-jdk-libs" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlin-coroutine = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutine" }
 kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
