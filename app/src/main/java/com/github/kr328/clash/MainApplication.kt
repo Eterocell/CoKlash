@@ -37,7 +37,11 @@ class MainApplication : Application() {
     private fun extractGeoFiles() {
         clashDir.mkdirs()
 
+        val updateDate = packageManager.getPackageInfo(packageName, 0).lastUpdateTime
         val geoipFile = File(clashDir, "geoip.metadb")
+        if (geoipFile.exists() && geoipFile.lastModified() < updateDate) {
+            geoipFile.delete()
+        }
         if (!geoipFile.exists()) {
             FileOutputStream(geoipFile).use {
                 assets.open("geoip.metadb").copyTo(it)
@@ -45,6 +49,9 @@ class MainApplication : Application() {
         }
 
         val geositeFile = File(clashDir, "geosite.dat")
+        if (geositeFile.exists() && geositeFile.lastModified() < updateDate) {
+            geositeFile.delete()
+        }
         if (!geositeFile.exists()) {
             FileOutputStream(geositeFile).use {
                 assets.open("geosite.dat").copyTo(it)
@@ -52,6 +59,9 @@ class MainApplication : Application() {
         }
 
         val asnFile = File(clashDir, "ASN.mmdb")
+        if (asnFile.exists() && asnFile.lastModified() < updateDate) {
+            asnFile.delete()
+        }
         if (!asnFile.exists()) {
             FileOutputStream(asnFile).use {
                 assets.open("ASN.mmdb").copyTo(it)
