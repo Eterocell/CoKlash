@@ -98,24 +98,6 @@ class NetworkSettingsDesign(
                 }
 
                 selectableList(
-                    value = srvStore::tunStackMode,
-                    values =
-                        arrayOf(
-                            "system",
-                            "gvisor",
-                            "mixed",
-                        ),
-                    valuesText =
-                        arrayOf(
-                            R.string.tun_stack_system,
-                            R.string.tun_stack_gvisor,
-                            R.string.tun_stack_mixed,
-                        ),
-                    title = R.string.tun_stack_mode,
-                    configure = vpnDependencies::add,
-                )
-
-                selectableList(
                     value = srvStore::accessControlMode,
                     values = AccessControlMode.values(),
                     valuesText =
