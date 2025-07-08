@@ -145,7 +145,9 @@ subprojects {
 
             splits {
                 abi {
-                    isEnable = true
+                    // Do not enable multiple APKs when building bundle
+                    val isBuildingBundle = gradle.startParameter.taskNames.any { it.lowercase().contains("bundle") }
+                    isEnable = !isBuildingBundle
                     isUniversalApk = true
                     reset()
                     include("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
