@@ -190,8 +190,6 @@ subprojects {
         }
     }
 
-    val isHideApi = name == "hideapi"
-
     // Disable androidTest tasks if no androidTest source directory exists
     afterEvaluate {
         if (!isHideApi && !project.projectDir.resolve("src/androidTest").exists()) {
