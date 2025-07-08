@@ -109,9 +109,9 @@ public abstract class GolangBuildTask extends Exec {
         }
 
         if (variant.getBuildType().isDebuggable()) {
-            commands.add("-ldflags=\"-extldflags=-Wl,-z,max-page-size=16384\"");
+            commands.add("-ldflags=-extldflags=-Wl,-z,max-page-size=16384");
         } else {
-            commands.add("-ldflags=\"-s -w -extldflags=-Wl,-z,max-page-size=16384\"");
+            commands.add("-ldflags=-s -w -extldflags=-Wl,-z,max-page-size=16384");
         }
 
         if (!packageName.isEmpty()) {
