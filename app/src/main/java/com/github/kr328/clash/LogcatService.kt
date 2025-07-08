@@ -82,10 +82,9 @@ class LogcatService :
 
     override fun onBind(intent: Intent?): IBinder = this.asBinder()
 
-    override fun asBinder(): IBinder =
-        object : Binder() {
-            override fun queryLocalInterface(descriptor: String): IInterface = this@LogcatService
-        }
+    override fun asBinder(): IBinder = object : Binder() {
+        override fun queryLocalInterface(descriptor: String): IInterface = this@LogcatService
+    }
 
     suspend fun snapshot(full: Boolean): LogcatCache.Snapshot? = cache.snapshot(full)
 

@@ -298,10 +298,9 @@ class ProfileManager(
         )
     }
 
-    private fun resolveUpdatedAt(uuid: UUID): Long =
-        context.pendingDir.resolve(uuid.toString()).directoryLastModified
-            ?: context.importedDir.resolve(uuid.toString()).directoryLastModified
-            ?: -1
+    private fun resolveUpdatedAt(uuid: UUID): Long = context.pendingDir.resolve(uuid.toString()).directoryLastModified
+        ?: context.importedDir.resolve(uuid.toString()).directoryLastModified
+        ?: -1
 
     private fun cloneImportedFiles(
         source: UUID,

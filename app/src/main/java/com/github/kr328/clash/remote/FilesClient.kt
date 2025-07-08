@@ -14,49 +14,46 @@ import android.provider.DocumentsContract as DC
 class FilesClient(
     private val context: Context,
 ) {
-    suspend fun list(parentDocumentId: String): List<File> =
-        withContext(Dispatchers.IO) {
-            val uri = DC.buildChildDocumentsUri(Authorities.FILES_PROVIDER, parentDocumentId)
+    suspend fun list(parentDocumentId: String): List<File> = withContext(Dispatchers.IO) {
+        val uri = DC.buildChildDocumentsUri(Authorities.FILES_PROVIDER, parentDocumentId)
 
-            context.contentResolver.query(uri, FilesProjection, null, null, null)?.use { cursor ->
-                val idIndex = cursor.getColumnIndex(DC.Document.COLUMN_DOCUMENT_ID)
-                val nameIndex = cursor.getColumnIndex(DC.Document.COLUMN_DISPLAY_NAME)
-                val sizeIndex = cursor.getColumnIndex(DC.Document.COLUMN_SIZE)
-                val lastModified = cursor.getColumnIndex(DC.Document.COLUMN_LAST_MODIFIED)
-                val mimeTypeIndex = cursor.getColumnIndex(DC.Document.COLUMN_MIME_TYPE)
+        context.contentResolver.query(uri, FilesProjection, null, null, null)?.use { cursor ->
+            val idIndex = cursor.getColumnIndex(DC.Document.COLUMN_DOCUMENT_ID)
+            val nameIndex = cursor.getColumnIndex(DC.Document.COLUMN_DISPLAY_NAME)
+            val sizeIndex = cursor.getColumnIndex(DC.Document.COLUMN_SIZE)
+            val lastModified = cursor.getColumnIndex(DC.Document.COLUMN_LAST_MODIFIED)
+            val mimeTypeIndex = cursor.getColumnIndex(DC.Document.COLUMN_MIME_TYPE)
 
-                cursor.moveToFirst()
+            cursor.moveToFirst()
 
-                List(cursor.count) {
-                    File(
-                        id = cursor.getString(idIndex),
-                        name = cursor.getString(nameIndex),
-                        size = cursor.getLong(sizeIndex),
-                        lastModified = cursor.getLong(lastModified),
-                        isDirectory = cursor.getString(mimeTypeIndex) == DC.Document.MIME_TYPE_DIR,
-                    ).also {
-                        cursor.moveToNext()
-                    }
-                }.sortedWith(compareBy({ !it.isDirectory }, { it.name }))
-            } ?: emptyList()
-        }
+            List(cursor.count) {
+                File(
+                    id = cursor.getString(idIndex),
+                    name = cursor.getString(nameIndex),
+                    size = cursor.getLong(sizeIndex),
+                    lastModified = cursor.getLong(lastModified),
+                    isDirectory = cursor.getString(mimeTypeIndex) == DC.Document.MIME_TYPE_DIR,
+                ).also {
+                    cursor.moveToNext()
+                }
+            }.sortedWith(compareBy({ !it.isDirectory }, { it.name }))
+        } ?: emptyList()
+    }
 
     suspend fun renameDocument(
         documentId: String,
         name: String,
-    ) =
-        withContext(Dispatchers.IO) {
-            val uri = buildDocumentUri(documentId)
+    ) = withContext(Dispatchers.IO) {
+        val uri = buildDocumentUri(documentId)
 
-            DC.renameDocument(context.contentResolver, uri, name)
-        }
+        DC.renameDocument(context.contentResolver, uri, name)
+    }
 
-    suspend fun deleteDocument(documentId: String) =
-        withContext(Dispatchers.IO) {
-            val uri = buildDocumentUri(documentId)
+    suspend fun deleteDocument(documentId: String) = withContext(Dispatchers.IO) {
+        val uri = buildDocumentUri(documentId)
 
-            DC.deleteDocument(context.contentResolver, uri)
-        }
+        DC.deleteDocument(context.contentResolver, uri)
+    }
 
     suspend fun importDocument(
         parentDocumentId: String,

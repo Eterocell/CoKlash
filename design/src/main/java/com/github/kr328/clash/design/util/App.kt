@@ -5,11 +5,10 @@ import android.content.pm.PackageManager
 import com.github.kr328.clash.common.compat.foreground
 import com.github.kr328.clash.design.model.AppInfo
 
-fun PackageInfo.toAppInfo(pm: PackageManager): AppInfo =
-    AppInfo(
-        packageName = packageName,
-        icon = applicationInfo!!.loadIcon(pm).foreground(),
-        label = applicationInfo!!.loadLabel(pm).toString(),
-        installTime = firstInstallTime,
-        updateDate = lastUpdateTime,
-    )
+fun PackageInfo.toAppInfo(pm: PackageManager): AppInfo = AppInfo(
+    packageName = packageName,
+    icon = applicationInfo!!.loadIcon(pm).foreground(),
+    label = applicationInfo!!.loadLabel(pm).toString(),
+    installTime = firstInstallTime,
+    updateDate = lastUpdateTime,
+)

@@ -46,8 +46,7 @@ object Parcelizer {
         override fun decodeBooleanElement(
             descriptor: SerialDescriptor,
             index: Int,
-        ) =
-            decodeBoolean()
+        ) = decodeBoolean()
 
         @ExperimentalSerializationApi
         override fun decodeInlineElement(
@@ -143,29 +142,25 @@ object Parcelizer {
             descriptor: SerialDescriptor,
             index: Int,
             value: Byte,
-        ) =
-            encodeByte(value)
+        ) = encodeByte(value)
 
         override fun encodeCharElement(
             descriptor: SerialDescriptor,
             index: Int,
             value: Char,
-        ) =
-            encodeChar(value)
+        ) = encodeChar(value)
 
         override fun encodeDoubleElement(
             descriptor: SerialDescriptor,
             index: Int,
             value: Double,
-        ) =
-            encodeDouble(value)
+        ) = encodeDouble(value)
 
         override fun encodeFloatElement(
             descriptor: SerialDescriptor,
             index: Int,
             value: Float,
-        ) =
-            encodeFloat(value)
+        ) = encodeFloat(value)
 
         @ExperimentalSerializationApi
         override fun encodeInlineElement(
@@ -177,29 +172,25 @@ object Parcelizer {
             descriptor: SerialDescriptor,
             index: Int,
             value: Int,
-        ) =
-            encodeInt(value)
+        ) = encodeInt(value)
 
         override fun encodeLongElement(
             descriptor: SerialDescriptor,
             index: Int,
             value: Long,
-        ) =
-            encodeLong(value)
+        ) = encodeLong(value)
 
         override fun encodeShortElement(
             descriptor: SerialDescriptor,
             index: Int,
             value: Short,
-        ) =
-            encodeShort(value)
+        ) = encodeShort(value)
 
         override fun encodeStringElement(
             descriptor: SerialDescriptor,
             index: Int,
             value: String,
-        ) =
-            encodeString(value)
+        ) = encodeString(value)
 
         @ExperimentalSerializationApi
         override fun <T : Any> encodeNullableSerializableElement(

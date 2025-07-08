@@ -28,12 +28,11 @@ class FileAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): Holder =
-        Holder(
-            AdapterFileBinding
-                .inflate(context.layoutInflater, parent, false)
-                .also { it.currentTime = currentTime },
-        )
+    ): Holder = Holder(
+        AdapterFileBinding
+            .inflate(context.layoutInflater, parent, false)
+            .also { it.currentTime = currentTime },
+    )
 
     override fun onBindViewHolder(
         holder: Holder,

@@ -138,29 +138,28 @@ class LogcatActivity : BaseActivity<LogcatDesign>() {
         super.onDestroy()
     }
 
-    private suspend fun bindLogcatService(): LogcatService =
-        suspendCoroutine { ctx ->
-            bindService(
-                LogcatService::class.intent,
-                object : ServiceConnection {
-                    override fun onServiceConnected(
-                        name: ComponentName?,
-                        service: IBinder?,
-                    ) {
-                        val srv = service!!.queryLocalInterface("") as LogcatService
+    private suspend fun bindLogcatService(): LogcatService = suspendCoroutine { ctx ->
+        bindService(
+            LogcatService::class.intent,
+            object : ServiceConnection {
+                override fun onServiceConnected(
+                    name: ComponentName?,
+                    service: IBinder?,
+                ) {
+                    val srv = service!!.queryLocalInterface("") as LogcatService
 
-                        ctx.resume(srv)
+                    ctx.resume(srv)
 
-                        conn = this
-                    }
+                    conn = this
+                }
 
-                    override fun onServiceDisconnected(name: ComponentName?) {
-                        conn = null
-                    }
-                },
-                Context.BIND_AUTO_CREATE,
-            )
-        }
+                override fun onServiceDisconnected(name: ComponentName?) {
+                    conn = null
+                }
+            },
+            Context.BIND_AUTO_CREATE,
+        )
+    }
 
     @Suppress("BlockingMethodInNonBlockingContext")
     private suspend fun writeLogTo(

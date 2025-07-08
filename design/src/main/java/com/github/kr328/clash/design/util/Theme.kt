@@ -56,24 +56,21 @@ fun Context.resolveClickableAttrs(
 
 fun Context.resolveThemedColor(
     @AttrRes resId: Int,
-): Int =
-    TypedValue()
-        .apply {
-            theme.resolveAttribute(resId, this, true)
-        }.data
+): Int = TypedValue()
+    .apply {
+        theme.resolveAttribute(resId, this, true)
+    }.data
 
 fun Context.resolveThemedBoolean(
     @AttrRes resId: Int,
-): Boolean =
-    TypedValue()
-        .apply {
-            theme.resolveAttribute(resId, this, true)
-        }.data != 0
+): Boolean = TypedValue()
+    .apply {
+        theme.resolveAttribute(resId, this, true)
+    }.data != 0
 
 fun Context.resolveThemedResourceId(
     @AttrRes resId: Int,
-): Int =
-    TypedValue()
-        .apply {
-            theme.resolveAttribute(resId, this, true)
-        }.resourceId
+): Int = TypedValue()
+    .apply {
+        theme.resolveAttribute(resId, this, true)
+    }.resourceId

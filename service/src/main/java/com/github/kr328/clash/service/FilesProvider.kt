@@ -123,42 +123,40 @@ class FilesProvider : DocumentsProvider() {
         parentDocumentId: String?,
         projection: Array<out String>?,
         sortOrder: String?,
-    ): Cursor =
-        runBlocking {
-            try {
-                val doc = parentDocumentId ?: "/"
-                val path = Paths.resolve(doc)
-                val documents = picker.list(path)
+    ): Cursor = runBlocking {
+        try {
+            val doc = parentDocumentId ?: "/"
+            val path = Paths.resolve(doc)
+            val documents = picker.list(path)
 
-                MatrixCursor(resolveDocumentProjection(projection)).apply {
-                    documents.forEach {
-                        newRow()
-                            .applyDocument(it)
-                            .add(D.COLUMN_DOCUMENT_ID, "$doc/${it.id}")
-                    }
+            MatrixCursor(resolveDocumentProjection(projection)).apply {
+                documents.forEach {
+                    newRow()
+                        .applyDocument(it)
+                        .add(D.COLUMN_DOCUMENT_ID, "$doc/${it.id}")
                 }
-            } catch (e: Exception) {
-                MatrixCursor(resolveDocumentProjection(projection))
             }
+        } catch (e: Exception) {
+            MatrixCursor(resolveDocumentProjection(projection))
         }
+    }
 
     override fun queryDocument(
         documentId: String?,
         projection: Array<out String>?,
-    ): Cursor =
-        runBlocking {
-            try {
-                val doc = documentId ?: "/"
-                val path = Paths.resolve(doc)
-                val document = picker.pick(path, false)
+    ): Cursor = runBlocking {
+        try {
+            val doc = documentId ?: "/"
+            val path = Paths.resolve(doc)
+            val document = picker.pick(path, false)
 
-                MatrixCursor(resolveDocumentProjection(projection)).apply {
-                    newRow().applyDocument(document).add(D.COLUMN_DOCUMENT_ID, doc)
-                }
-            } catch (e: Exception) {
-                MatrixCursor(resolveDocumentProjection(projection))
+            MatrixCursor(resolveDocumentProjection(projection)).apply {
+                newRow().applyDocument(document).add(D.COLUMN_DOCUMENT_ID, doc)
             }
+        } catch (e: Exception) {
+            MatrixCursor(resolveDocumentProjection(projection))
         }
+    }
 
     override fun onCreate(): Boolean = true
 

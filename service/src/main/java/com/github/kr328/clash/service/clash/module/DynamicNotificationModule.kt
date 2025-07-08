@@ -79,42 +79,41 @@ class DynamicNotificationModule(
         }
     }
 
-    override suspend fun run() =
-        coroutineScope {
-            var shouldUpdate = service.getSystemService<PowerManager>()?.isInteractive ?: true
+    override suspend fun run() = coroutineScope {
+        var shouldUpdate = service.getSystemService<PowerManager>()?.isInteractive ?: true
 
-            val screenToggle =
-                receiveBroadcast(false, Channel.CONFLATED) {
-                    addAction(Intent.ACTION_SCREEN_ON)
-                    addAction(Intent.ACTION_SCREEN_OFF)
-                }
+        val screenToggle =
+            receiveBroadcast(false, Channel.CONFLATED) {
+                addAction(Intent.ACTION_SCREEN_ON)
+                addAction(Intent.ACTION_SCREEN_OFF)
+            }
 
-            val profileLoaded =
-                receiveBroadcast(capacity = Channel.CONFLATED) {
-                    addAction(Intents.ACTION_PROFILE_LOADED)
-                }
+        val profileLoaded =
+            receiveBroadcast(capacity = Channel.CONFLATED) {
+                addAction(Intents.ACTION_PROFILE_LOADED)
+            }
 
-            val ticker = ticker(TimeUnit.SECONDS.toMillis(1))
+        val ticker = ticker(TimeUnit.SECONDS.toMillis(1))
 
-            while (true) {
-                select<Unit> {
-                    screenToggle.onReceive {
-                        when (it.action) {
-                            Intent.ACTION_SCREEN_ON ->
-                                shouldUpdate = true
-                            Intent.ACTION_SCREEN_OFF ->
-                                shouldUpdate = false
-                        }
+        while (true) {
+            select<Unit> {
+                screenToggle.onReceive {
+                    when (it.action) {
+                        Intent.ACTION_SCREEN_ON ->
+                            shouldUpdate = true
+                        Intent.ACTION_SCREEN_OFF ->
+                            shouldUpdate = false
                     }
-                    profileLoaded.onReceive {
-                        builder.setContentTitle(StatusProvider.currentProfile ?: "Not selected")
-                    }
-                    if (shouldUpdate) {
-                        ticker.onReceive {
-                            update()
-                        }
+                }
+                profileLoaded.onReceive {
+                    builder.setContentTitle(StatusProvider.currentProfile ?: "Not selected")
+                }
+                if (shouldUpdate) {
+                    ticker.onReceive {
+                        update()
                     }
                 }
             }
         }
+    }
 }

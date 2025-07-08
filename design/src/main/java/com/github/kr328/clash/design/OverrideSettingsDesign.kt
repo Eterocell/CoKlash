@@ -27,26 +27,25 @@ class OverrideSettingsDesign(
     override val root: View
         get() = binding.root
 
-    suspend fun requestResetConfirm(): Boolean =
-        suspendCancellableCoroutine { ctx ->
-            val dialog =
-                MaterialAlertDialogBuilder(context)
-                    .setTitle(R.string.reset_override_settings)
-                    .setMessage(R.string.reset_override_settings_message)
-                    .setPositiveButton(R.string.ok) { _, _ -> ctx.resume(true) }
-                    .setNegativeButton(R.string.cancel) { _, _ -> }
-                    .show()
+    suspend fun requestResetConfirm(): Boolean = suspendCancellableCoroutine { ctx ->
+        val dialog =
+            MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.reset_override_settings)
+                .setMessage(R.string.reset_override_settings_message)
+                .setPositiveButton(R.string.ok) { _, _ -> ctx.resume(true) }
+                .setNegativeButton(R.string.cancel) { _, _ -> }
+                .show()
 
-            dialog.setOnDismissListener {
-                if (!ctx.isCompleted) {
-                    ctx.resume(false)
-                }
-            }
-
-            ctx.invokeOnCancellation {
-                dialog.dismiss()
+        dialog.setOnDismissListener {
+            if (!ctx.isCompleted) {
+                ctx.resume(false)
             }
         }
+
+        ctx.invokeOnCancellation {
+            dialog.dismiss()
+        }
+    }
 
     init {
         binding.self = this

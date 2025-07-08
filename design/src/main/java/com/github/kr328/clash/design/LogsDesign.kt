@@ -40,18 +40,17 @@ class LogsDesign(
         adapter.patchDataSet(adapter::logs, logs, false, LogFile::fileName)
     }
 
-    suspend fun requestDeleteAll(): Boolean =
-        withContext(Dispatchers.Main) {
-            suspendCancellableCoroutine { ctx ->
-                MaterialAlertDialogBuilder(context)
-                    .setTitle(R.string.delete_all_logs)
-                    .setMessage(R.string.delete_all_logs_warn)
-                    .setPositiveButton(R.string.ok) { _, _ -> ctx.resume(true) }
-                    .setNegativeButton(R.string.cancel) { _, _ -> }
-                    .show()
-                    .setOnDismissListener { if (!ctx.isCompleted) ctx.resume(false) }
-            }
+    suspend fun requestDeleteAll(): Boolean = withContext(Dispatchers.Main) {
+        suspendCancellableCoroutine { ctx ->
+            MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.delete_all_logs)
+                .setMessage(R.string.delete_all_logs_warn)
+                .setPositiveButton(R.string.ok) { _, _ -> ctx.resume(true) }
+                .setNegativeButton(R.string.cancel) { _, _ -> }
+                .show()
+                .setOnDismissListener { if (!ctx.isCompleted) ctx.resume(false) }
         }
+    }
 
     init {
         binding.self = this

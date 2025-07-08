@@ -23,52 +23,51 @@ internal suspend fun requestEditableListOverlay(
     adapter: RecyclerView.Adapter<*>,
     title: CharSequence,
     addNewItem: suspend () -> Unit,
-): EditableListOverlayResult =
-    coroutineScope {
-        suspendCancellableCoroutine { ctx ->
-            val dialog = FullScreenDialog(context)
-            val binding =
-                DialogPreferenceListBinding
-                    .inflate(context.layoutInflater, context.root, false)
+): EditableListOverlayResult = coroutineScope {
+    suspendCancellableCoroutine { ctx ->
+        val dialog = FullScreenDialog(context)
+        val binding =
+            DialogPreferenceListBinding
+                .inflate(context.layoutInflater, context.root, false)
 
-            binding.surface = dialog.surface
-            binding.mainList.applyLinearAdapter(context, adapter)
-            binding.titleView.text = title
+        binding.surface = dialog.surface
+        binding.mainList.applyLinearAdapter(context, adapter)
+        binding.titleView.text = title
 
-            binding.newView.setOnClickListener {
-                launch {
-                    addNewItem()
-                }
+        binding.newView.setOnClickListener {
+            launch {
+                addNewItem()
             }
-
-            binding.resetView.setOnClickListener {
-                ctx.resume(EditableListOverlayResult.Reset)
-
-                dialog.dismiss()
-            }
-
-            binding.cancelView.setOnClickListener {
-                dialog.dismiss()
-            }
-
-            binding.okView.setOnClickListener {
-                ctx.resume(EditableListOverlayResult.Apply)
-
-                dialog.dismiss()
-            }
-
-            dialog.setContentView(binding.root)
-
-            dialog.setOnDismissListener {
-                if (!ctx.isCompleted) {
-                    ctx.resume(EditableListOverlayResult.Cancel)
-                }
-            }
-
-            ctx.invokeOnCancellation {
-                dialog.dismiss()
-            }
-
-            dialog.show()
         }
+
+        binding.resetView.setOnClickListener {
+            ctx.resume(EditableListOverlayResult.Reset)
+
+            dialog.dismiss()
+        }
+
+        binding.cancelView.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        binding.okView.setOnClickListener {
+            ctx.resume(EditableListOverlayResult.Apply)
+
+            dialog.dismiss()
+        }
+
+        dialog.setContentView(binding.root)
+
+        dialog.setOnDismissListener {
+            if (!ctx.isCompleted) {
+                ctx.resume(EditableListOverlayResult.Cancel)
+            }
+        }
+
+        ctx.invokeOnCancellation {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
+}

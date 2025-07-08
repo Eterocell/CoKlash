@@ -20,11 +20,10 @@ class LogMessageAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): Holder =
-        Holder(
-            AdapterLogMessageBinding
-                .inflate(context.layoutInflater, parent, false),
-        )
+    ): Holder = Holder(
+        AdapterLogMessageBinding
+            .inflate(context.layoutInflater, parent, false),
+    )
 
     override fun onBindViewHolder(
         holder: Holder,

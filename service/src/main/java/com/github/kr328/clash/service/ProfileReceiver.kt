@@ -53,22 +53,21 @@ class ProfileReceiver : BroadcastReceiver() {
         private val lock = Mutex()
         private var initialized: Boolean = false
 
-        suspend fun rescheduleAll(context: Context) =
-            lock.withLock {
-                if (initialized) {
-                    return
-                }
-
-                initialized = true
-
-                Log.i("Reschedule all profiles update")
-
-                ImportedDao()
-                    .queryAllUUIDs()
-                    .mapNotNull { ImportedDao().queryByUUID(it) }
-                    .filter { it.type != Profile.Type.File }
-                    .forEach { scheduleNext(context, it) }
+        suspend fun rescheduleAll(context: Context) = lock.withLock {
+            if (initialized) {
+                return
             }
+
+            initialized = true
+
+            Log.i("Reschedule all profiles update")
+
+            ImportedDao()
+                .queryAllUUIDs()
+                .mapNotNull { ImportedDao().queryByUUID(it) }
+                .filter { it.type != Profile.Type.File }
+                .forEach { scheduleNext(context, it) }
+        }
 
         fun cancelNext(
             context: Context,
@@ -121,10 +120,9 @@ class ProfileReceiver : BroadcastReceiver() {
                 ?.set(AlarmManager.RTC, current + interval, intent)
         }
 
-        private suspend fun reset() =
-            lock.withLock {
-                initialized = false
-            }
+        private suspend fun reset() = lock.withLock {
+            initialized = false
+        }
 
         private fun pendingIntentOf(
             context: Context,
