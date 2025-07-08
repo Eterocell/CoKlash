@@ -21,12 +21,11 @@ class LogFileAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): Holder =
-        Holder(
-            ActionLabel(context).apply {
-                layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-            },
-        )
+    ): Holder = Holder(
+        ActionLabel(context).apply {
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        },
+    )
 
     override fun onBindViewHolder(
         holder: Holder,

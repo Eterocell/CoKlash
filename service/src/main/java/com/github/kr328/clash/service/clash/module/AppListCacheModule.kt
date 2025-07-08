@@ -12,8 +12,7 @@ import java.util.concurrent.TimeUnit
 class AppListCacheModule(
     service: Service,
 ) : Module<Unit>(service) {
-    private fun PackageInfo.uniqueUidName(): String =
-        if (sharedUserId?.isNotBlank() == true) sharedUserId!! else packageName
+    private fun PackageInfo.uniqueUidName(): String = if (sharedUserId?.isNotBlank() == true) sharedUserId!! else packageName
 
     private fun reload() {
         val packages =

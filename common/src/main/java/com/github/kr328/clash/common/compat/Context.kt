@@ -25,12 +25,11 @@ fun Context.getDrawableCompat(
 fun PackageManager.getPackageInfoCompat(
     packageName: String,
     flags: Int,
-): PackageInfo =
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags.toLong()))
-    } else {
-        getPackageInfo(packageName, flags)
-    }
+): PackageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+    getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags.toLong()))
+} else {
+    getPackageInfo(packageName, flags)
+}
 
 @SuppressLint("UnspecifiedRegisterReceiverFlag")
 fun Context.registerReceiverCompat(
@@ -38,12 +37,11 @@ fun Context.registerReceiverCompat(
     filter: IntentFilter,
     permission: String? = null,
     handler: Handler? = null,
-): Intent? =
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        registerReceiver(
-            receiver, filter, permission, handler,
-            if (permission == null) Context.RECEIVER_EXPORTED else Context.RECEIVER_NOT_EXPORTED,
-        )
-    } else {
-        registerReceiver(receiver, filter, permission, handler)
-    }
+): Intent? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+    registerReceiver(
+        receiver, filter, permission, handler,
+        if (permission == null) Context.RECEIVER_EXPORTED else Context.RECEIVER_NOT_EXPORTED,
+    )
+} else {
+    registerReceiver(receiver, filter, permission, handler)
+}

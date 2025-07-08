@@ -6,13 +6,12 @@ import android.os.Build
 fun pendingIntentFlags(
     flags: Int,
     mutable: Boolean = false,
-): Int =
-    if (Build.VERSION.SDK_INT >= 24) {
-        if (Build.VERSION.SDK_INT > 30 && mutable) {
-            flags or PendingIntent.FLAG_MUTABLE
-        } else {
-            flags or PendingIntent.FLAG_IMMUTABLE
-        }
+): Int = if (Build.VERSION.SDK_INT >= 24) {
+    if (Build.VERSION.SDK_INT > 30 && mutable) {
+        flags or PendingIntent.FLAG_MUTABLE
     } else {
-        flags
+        flags or PendingIntent.FLAG_IMMUTABLE
     }
+} else {
+    flags
+}

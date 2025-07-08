@@ -12,21 +12,20 @@ class Resource<T> {
 
     private var value: T? = null
 
-    suspend fun get(): T =
-        suspendCancellableCoroutine { ctx ->
-            val callback =
-                object : Callback<T> {
-                    override fun accept(value: T) {
-                        ctx.resume(value)
-                    }
+    suspend fun get(): T = suspendCancellableCoroutine { ctx ->
+        val callback =
+            object : Callback<T> {
+                override fun accept(value: T) {
+                    ctx.resume(value)
                 }
-
-            ctx.invokeOnCancellation {
-                cancel(callback)
             }
 
-            get(callback)
+        ctx.invokeOnCancellation {
+            cancel(callback)
         }
+
+        get(callback)
+    }
 
     fun set(v: T?) {
         setAndNotify(v)

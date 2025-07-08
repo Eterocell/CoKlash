@@ -25,11 +25,10 @@ class AppAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): Holder =
-        Holder(
-            AdapterAppBinding
-                .inflate(context.layoutInflater, context.root, false),
-        )
+    ): Holder = Holder(
+        AdapterAppBinding
+            .inflate(context.layoutInflater, context.root, false),
+    )
 
     override fun onBindViewHolder(
         holder: Holder,

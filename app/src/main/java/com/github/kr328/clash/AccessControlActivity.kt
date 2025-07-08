@@ -125,33 +125,32 @@ class AccessControlActivity : BaseActivity<AccessControlDesign>() {
         }
     }
 
-    private suspend fun loadApps(selected: Set<String>): List<AppInfo> =
-        withContext(Dispatchers.IO) {
-            val reverse = uiStore.accessControlReverse
-            val sort = uiStore.accessControlSort
-            val systemApp = uiStore.accessControlSystemApp
+    private suspend fun loadApps(selected: Set<String>): List<AppInfo> = withContext(Dispatchers.IO) {
+        val reverse = uiStore.accessControlReverse
+        val sort = uiStore.accessControlSort
+        val systemApp = uiStore.accessControlSystemApp
 
-            val base = compareByDescending<AppInfo> { it.packageName in selected }
-            val comparator = if (reverse) base.thenDescending(sort) else base.then(sort)
+        val base = compareByDescending<AppInfo> { it.packageName in selected }
+        val comparator = if (reverse) base.thenDescending(sort) else base.then(sort)
 
-            val pm = packageManager
-            val packages = pm.getInstalledPackages(PackageManager.GET_PERMISSIONS)
+        val pm = packageManager
+        val packages = pm.getInstalledPackages(PackageManager.GET_PERMISSIONS)
 
-            packages
-                .asSequence()
-                .filter {
-                    it.packageName != packageName
-                }.filter {
-                    it.applicationInfo != null
-                }.filter {
-                    it.requestedPermissions?.contains(INTERNET) == true || it.applicationInfo!!.uid < android.os.Process.FIRST_APPLICATION_UID
-                }.filter {
-                    systemApp || !it.isSystemApp
-                }.map {
-                    it.toAppInfo(pm)
-                }.sortedWith(comparator)
-                .toList()
-        }
+        packages
+            .asSequence()
+            .filter {
+                it.packageName != packageName
+            }.filter {
+                it.applicationInfo != null
+            }.filter {
+                it.requestedPermissions?.contains(INTERNET) == true || it.applicationInfo!!.uid < android.os.Process.FIRST_APPLICATION_UID
+            }.filter {
+                systemApp || !it.isSystemApp
+            }.map {
+                it.toAppInfo(pm)
+            }.sortedWith(comparator)
+            .toList()
+    }
 
     private val PackageInfo.isSystemApp: Boolean
         get() {

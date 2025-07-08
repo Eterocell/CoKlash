@@ -83,12 +83,11 @@ object Clash {
                     protocol: Int,
                     source: String,
                     target: String,
-                ): Int =
-                    querySocketUid(
-                        protocol,
-                        parseInetSocketAddress(source),
-                        parseInetSocketAddress(target),
-                    )
+                ): Int = querySocketUid(
+                    protocol,
+                    parseInetSocketAddress(source),
+                    parseInetSocketAddress(target),
+                )
             },
         )
     }
@@ -120,16 +119,14 @@ object Clash {
     fun queryGroup(
         name: String,
         sort: ProxySort,
-    ): ProxyGroup =
-        Bridge
-            .nativeQueryGroup(name, sort.name)
-            ?.let { Json.Default.decodeFromString(ProxyGroup.serializer(), it) }
-            ?: ProxyGroup(Proxy.Type.Unknown, emptyList(), "")
+    ): ProxyGroup = Bridge
+        .nativeQueryGroup(name, sort.name)
+        ?.let { Json.Default.decodeFromString(ProxyGroup.serializer(), it) }
+        ?: ProxyGroup(Proxy.Type.Unknown, emptyList(), "")
 
-    fun healthCheck(name: String): CompletableDeferred<Unit> =
-        CompletableDeferred<Unit>().apply {
-            Bridge.nativeHealthCheck(this, name)
-        }
+    fun healthCheck(name: String): CompletableDeferred<Unit> = CompletableDeferred<Unit>().apply {
+        Bridge.nativeHealthCheck(this, name)
+    }
 
     fun healthCheckAll() {
         Bridge.nativeHealthCheckAll()
@@ -145,37 +142,35 @@ object Clash {
         url: String,
         force: Boolean,
         reportStatus: (FetchStatus) -> Unit,
-    ): CompletableDeferred<Unit> =
-        CompletableDeferred<Unit>().apply {
-            Bridge.nativeFetchAndValid(
-                object : FetchCallback {
-                    override fun report(statusJson: String) {
-                        reportStatus(
-                            Json.Default.decodeFromString(
-                                FetchStatus.serializer(),
-                                statusJson,
-                            ),
-                        )
-                    }
+    ): CompletableDeferred<Unit> = CompletableDeferred<Unit>().apply {
+        Bridge.nativeFetchAndValid(
+            object : FetchCallback {
+                override fun report(statusJson: String) {
+                    reportStatus(
+                        Json.Default.decodeFromString(
+                            FetchStatus.serializer(),
+                            statusJson,
+                        ),
+                    )
+                }
 
-                    override fun complete(error: String?) {
-                        if (error != null) {
-                            completeExceptionally(ClashException(error))
-                        } else {
-                            complete(Unit)
-                        }
+                override fun complete(error: String?) {
+                    if (error != null) {
+                        completeExceptionally(ClashException(error))
+                    } else {
+                        complete(Unit)
                     }
-                },
-                path.absolutePath,
-                url,
-                force,
-            )
-        }
+                }
+            },
+            path.absolutePath,
+            url,
+            force,
+        )
+    }
 
-    fun load(path: File): CompletableDeferred<Unit> =
-        CompletableDeferred<Unit>().apply {
-            Bridge.nativeLoad(this, path.absolutePath)
-        }
+    fun load(path: File): CompletableDeferred<Unit> = CompletableDeferred<Unit>().apply {
+        Bridge.nativeLoad(this, path.absolutePath)
+    }
 
     fun queryProviders(): List<Provider> {
         val providers =
@@ -189,20 +184,18 @@ object Clash {
     fun updateProvider(
         type: Provider.Type,
         name: String,
-    ): CompletableDeferred<Unit> =
-        CompletableDeferred<Unit>().apply {
-            Bridge.nativeUpdateProvider(this, type.toString(), name)
-        }
+    ): CompletableDeferred<Unit> = CompletableDeferred<Unit>().apply {
+        Bridge.nativeUpdateProvider(this, type.toString(), name)
+    }
 
-    fun queryOverride(slot: OverrideSlot): ConfigurationOverride =
-        try {
-            ConfigurationOverrideJson.decodeFromString(
-                ConfigurationOverride.serializer(),
-                Bridge.nativeReadOverride(slot.ordinal),
-            )
-        } catch (e: Exception) {
-            ConfigurationOverride()
-        }
+    fun queryOverride(slot: OverrideSlot): ConfigurationOverride = try {
+        ConfigurationOverrideJson.decodeFromString(
+            ConfigurationOverride.serializer(),
+            Bridge.nativeReadOverride(slot.ordinal),
+        )
+    } catch (e: Exception) {
+        ConfigurationOverride()
+    }
 
     fun patchOverride(
         slot: OverrideSlot,
@@ -221,20 +214,18 @@ object Clash {
         Bridge.nativeClearOverride(slot.ordinal)
     }
 
-    fun queryConfiguration(): UiConfiguration =
-        Json.Default.decodeFromString(
-            UiConfiguration.serializer(),
-            Bridge.nativeQueryConfiguration(),
-        )
+    fun queryConfiguration(): UiConfiguration = Json.Default.decodeFromString(
+        UiConfiguration.serializer(),
+        Bridge.nativeQueryConfiguration(),
+    )
 
-    fun subscribeLogcat(): ReceiveChannel<LogMessage> =
-        Channel<LogMessage>(32).apply {
-            Bridge.nativeSubscribeLogcat(
-                object : LogcatInterface {
-                    override fun received(jsonPayload: String) {
-                        trySend(Json.decodeFromString(LogMessage.serializer(), jsonPayload))
-                    }
-                },
-            )
-        }
+    fun subscribeLogcat(): ReceiveChannel<LogMessage> = Channel<LogMessage>(32).apply {
+        Bridge.nativeSubscribeLogcat(
+            object : LogcatInterface {
+                override fun received(jsonPayload: String) {
+                    trySend(Json.decodeFromString(LogMessage.serializer(), jsonPayload))
+                }
+            },
+        )
+    }
 }

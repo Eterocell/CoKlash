@@ -30,12 +30,11 @@ class ProfileAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): Holder =
-        Holder(
-            AdapterProfileBinding
-                .inflate(context.layoutInflater, parent, false)
-                .also { it.currentTime = currentTime },
-        )
+    ): Holder = Holder(
+        AdapterProfileBinding
+            .inflate(context.layoutInflater, parent, false)
+            .also { it.currentTime = currentTime },
+    )
 
     override fun onBindViewHolder(
         holder: Holder,

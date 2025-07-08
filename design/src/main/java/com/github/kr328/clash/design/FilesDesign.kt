@@ -72,14 +72,13 @@ class FilesDesign(
         adapter.updateElapsed()
     }
 
-    suspend fun requestFileName(name: String): String =
-        context.requestModelTextInput(
-            initial = name,
-            title = context.getText(R.string.file_name),
-            hint = context.getText(R.string.file_name),
-            error = context.getText(R.string.invalid_file_name),
-            validator = ValidatorFileName,
-        )
+    suspend fun requestFileName(name: String): String = context.requestModelTextInput(
+        initial = name,
+        title = context.getText(R.string.file_name),
+        hint = context.getText(R.string.file_name),
+        error = context.getText(R.string.invalid_file_name),
+        validator = ValidatorFileName,
+    )
 
     init {
         binding.self = this

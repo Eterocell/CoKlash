@@ -124,37 +124,36 @@ private suspend fun <K, V> requestEditTextMap(
 private suspend fun requestModelInputEntry(
     context: Context,
     title: CharSequence,
-): Pair<String, String>? =
-    suspendCancellableCoroutine { ctx ->
-        val binding =
-            DialogEditableMapTextFieldBinding
-                .inflate(context.layoutInflater, context.root, false)
+): Pair<String, String>? = suspendCancellableCoroutine { ctx ->
+    val binding =
+        DialogEditableMapTextFieldBinding
+            .inflate(context.layoutInflater, context.root, false)
 
-        val dialog =
-            MaterialAlertDialogBuilder(context)
-                .setTitle(title)
-                .setNegativeButton(R.string.cancel) { _, _ -> }
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    val k =
-                        binding.keyView.text
-                            ?.toString()
-                            ?.trim() ?: ""
-                    val v =
-                        binding.valueView.text
-                            ?.toString()
-                            ?.trim() ?: ""
+    val dialog =
+        MaterialAlertDialogBuilder(context)
+            .setTitle(title)
+            .setNegativeButton(R.string.cancel) { _, _ -> }
+            .setPositiveButton(R.string.ok) { _, _ ->
+                val k =
+                    binding.keyView.text
+                        ?.toString()
+                        ?.trim() ?: ""
+                val v =
+                    binding.valueView.text
+                        ?.toString()
+                        ?.trim() ?: ""
 
-                    if (k.isNotEmpty() && v.isNotEmpty()) {
-                        ctx.resume(k to v)
-                    }
-                }.setView(binding.root)
-                .create()
+                if (k.isNotEmpty() && v.isNotEmpty()) {
+                    ctx.resume(k to v)
+                }
+            }.setView(binding.root)
+            .create()
 
-        dialog.setOnCancelListener {
-            if (!ctx.isCompleted) {
-                ctx.resume(null)
-            }
+    dialog.setOnCancelListener {
+        if (!ctx.isCompleted) {
+            ctx.resume(null)
         }
-
-        dialog.show()
     }
+
+    dialog.show()
+}

@@ -9,7 +9,7 @@ import androidx.annotation.StyleRes
 var TextView.textAppearance: Int
     get() = throw UnsupportedOperationException("set value only")
     set(
-    @StyleRes value
+        @StyleRes value,
     ) {
         if (Build.VERSION.SDK_INT >= 23) {
             setTextAppearance(value)

@@ -13,27 +13,26 @@ fun Traffic.trafficTotal(): String {
     return trafficString(upload + download)
 }
 
-private fun trafficString(scaled: Long): String =
-    when {
-        scaled > 1024 * 1024 * 1024 * 100L -> {
-            val data = scaled / 1024 / 1024 / 1024
+private fun trafficString(scaled: Long): String = when {
+    scaled > 1024 * 1024 * 1024 * 100L -> {
+        val data = scaled / 1024 / 1024 / 1024
 
-            String.format("%.2f GiB", data.toFloat() / 100)
-        }
-        scaled > 1024 * 1024 * 100L -> {
-            val data = scaled / 1024 / 1024
-
-            String.format("%.2f MiB", data.toFloat() / 100)
-        }
-        scaled > 1024 * 100L -> {
-            val data = scaled / 1024
-
-            String.format("%.2f KiB", data.toFloat() / 100)
-        }
-        else -> {
-            "$scaled Bytes"
-        }
+        String.format("%.2f GiB", data.toFloat() / 100)
     }
+    scaled > 1024 * 1024 * 100L -> {
+        val data = scaled / 1024 / 1024
+
+        String.format("%.2f MiB", data.toFloat() / 100)
+    }
+    scaled > 1024 * 100L -> {
+        val data = scaled / 1024
+
+        String.format("%.2f KiB", data.toFloat() / 100)
+    }
+    else -> {
+        "$scaled Bytes"
+    }
+}
 
 private fun scaleTraffic(value: Long): Long {
     val type = (value ushr 30) and 0x3

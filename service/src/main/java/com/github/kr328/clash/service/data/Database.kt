@@ -33,14 +33,13 @@ abstract class Database : RoomDatabase() {
 
         private var softDatabase: SoftReference<Database?> = SoftReference(null)
 
-        private fun open(context: Context): Database =
-            Room
-                .databaseBuilder(
-                    context.applicationContext,
-                    Database::class.java,
-                    "profiles",
-                ).addMigrations(*MIGRATIONS)
-                .build()
+        private fun open(context: Context): Database = Room
+            .databaseBuilder(
+                context.applicationContext,
+                Database::class.java,
+                "profiles",
+            ).addMigrations(*MIGRATIONS)
+            .build()
 
         init {
             Global.launch(Dispatchers.IO) {

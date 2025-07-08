@@ -122,31 +122,30 @@ class NewProfileActivity : BaseActivity<NewProfileDesign>() {
         return null
     }
 
-    private suspend fun queryProfileProviders(): List<ProfileProvider> =
-        withContext(Dispatchers.IO) {
-            val providers =
-                packageManager
-                    .queryIntentActivities(
-                        Intent(Intents.ACTION_PROVIDE_URL),
-                        0,
-                    ).map {
-                        val activity = it.activityInfo
+    private suspend fun queryProfileProviders(): List<ProfileProvider> = withContext(Dispatchers.IO) {
+        val providers =
+            packageManager
+                .queryIntentActivities(
+                    Intent(Intents.ACTION_PROVIDE_URL),
+                    0,
+                ).map {
+                    val activity = it.activityInfo
 
-                        val name = activity.applicationInfo.loadLabel(packageManager)
-                        val summary = activity.loadLabel(packageManager)
-                        val icon = activity.loadIcon(packageManager)
-                        val intent =
-                            Intent(Intents.ACTION_PROVIDE_URL)
-                                .setComponent(
-                                    ComponentName(
-                                        activity.packageName,
-                                        activity.name,
-                                    ),
-                                )
+                    val name = activity.applicationInfo.loadLabel(packageManager)
+                    val summary = activity.loadLabel(packageManager)
+                    val icon = activity.loadIcon(packageManager)
+                    val intent =
+                        Intent(Intents.ACTION_PROVIDE_URL)
+                            .setComponent(
+                                ComponentName(
+                                    activity.packageName,
+                                    activity.name,
+                                ),
+                            )
 
-                        ProfileProvider.External(name.toString(), summary.toString(), icon, intent)
-                    }
+                    ProfileProvider.External(name.toString(), summary.toString(), icon, intent)
+                }
 
-            listOf(ProfileProvider.File(self), ProfileProvider.Url(self)) + providers
-        }
+        listOf(ProfileProvider.File(self), ProfileProvider.Url(self)) + providers
+    }
 }

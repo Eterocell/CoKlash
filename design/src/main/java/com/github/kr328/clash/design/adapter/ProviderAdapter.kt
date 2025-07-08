@@ -47,12 +47,11 @@ class ProviderAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): Holder =
-        Holder(
-            AdapterProviderBinding
-                .inflate(context.layoutInflater, parent, false)
-                .also { it.currentTime = currentTime },
-        )
+    ): Holder = Holder(
+        AdapterProviderBinding
+            .inflate(context.layoutInflater, parent, false)
+            .also { it.currentTime = currentTime },
+    )
 
     override fun onBindViewHolder(
         holder: Holder,

@@ -21,14 +21,13 @@ class ProfileProviderAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): Holder =
-        Holder(
-            AdapterProfileProviderBinding.inflate(
-                context.layoutInflater,
-                parent,
-                false,
-            ),
-        )
+    ): Holder = Holder(
+        AdapterProfileProviderBinding.inflate(
+            context.layoutInflater,
+            parent,
+            false,
+        ),
+    )
 
     override fun onBindViewHolder(
         holder: Holder,
