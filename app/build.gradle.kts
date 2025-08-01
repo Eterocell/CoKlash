@@ -41,7 +41,7 @@ tasks.getByName("clean", type = Delete::class) {
 
 val geoFilesDownloadDir = "src/main/assets"
 
-task("downloadGeoFiles") {
+tasks.register("downloadGeoFiles") {
 
     val geoFilesUrls =
         mapOf(
