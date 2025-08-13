@@ -86,11 +86,11 @@ jobs:
             git push --follow-tags
           fi
 
-      - name: Extract KeyStore
-        env:
-          KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+      - name: Update CA
         run: |
-          echo $KEYSTORE_B64 | base64 -d > ${{ github.workspace }}/keystore.jks
+          sudo apt-get update && sudo apt-get install ca-certificates
+          sudo update-ca-certificates
+          cp -f /etc/ssl/certs/ca-certificates.crt core/src/foss/golang/clash/component/ca/ca-certificates.crt
 
       - name: Signing properties
         env:
