@@ -1,5 +1,6 @@
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.internal.api.ApkVariantOutputImpl
 import java.util.*
 
 plugins {
@@ -54,12 +55,10 @@ subprojects {
 
             if (!isApp) {
                 consumerProguardFiles("consumer-rules.pro")
-            } else {
-                setProperty("archivesBaseName", "cmfa-$versionName")
             }
         }
 
-        ndkVersion = "28.1.13356709"
+        ndkVersion = "28.2.13676358"
 
         compileSdkVersion(36)
 
