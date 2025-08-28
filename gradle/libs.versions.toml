@@ -19,7 +19,7 @@ room = "2.7.2"
 multiprocess = "1.0.0"
 spotless = "7.2.1"
 androidx-compose-bom = "2025.08.01"
-androidx-navigation = "2.9.2"
+androidx-navigation = "2.9.3"
 
 [libraries]
 android-desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "android-desugar-jdk-libs" }
