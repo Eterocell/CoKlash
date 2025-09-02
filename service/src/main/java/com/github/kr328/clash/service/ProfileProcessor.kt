@@ -84,12 +84,11 @@ object ProfileProcessor {
                         if (snapshot.type == Profile.Type.Url) {
                             if (snapshot.source.startsWith("https://", true)) {
                                 val client = OkHttpClient()
-                                val request =
-                                    Request
-                                        .Builder()
-                                        .url(snapshot.source)
-                                        .header("User-Agent", "ClashforWindows/0.19.23")
-                                        .build()
+                                val versionName = context.packageManager.getPackageInfo(context.packageName, 0).versionName
+                                val request = Request.Builder()
+                                    .url(snapshot.source)
+                                    .header("User-Agent", "ClashMetaForAndroid/$versionName")
+                                    .build()
 
                                 client.newCall(request).execute().use { response ->
                                     val userinfo = response.headers["subscription-userinfo"]
