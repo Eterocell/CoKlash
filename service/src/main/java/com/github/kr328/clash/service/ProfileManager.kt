@@ -156,10 +156,12 @@ class ProfileManager(
         val client = OkHttpClient()
         try {
             val versionName = context.packageManager.getPackageInfo(context.packageName, 0).versionName
-            val request = Request.Builder()
-                .url(old.source)
-                .header("User-Agent", "ClashMetaForAndroid/$versionName")
-                .build()
+            val request =
+                Request
+                    .Builder()
+                    .url(old.source)
+                    .header("User-Agent", "ClashMetaForAndroid/$versionName")
+                    .build()
 
             client.newCall(request).execute().use { response ->
                 if (!response.isSuccessful || response.headers["subscription-userinfo"] == null) return

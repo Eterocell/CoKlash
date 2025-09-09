@@ -1,6 +1,5 @@
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.internal.api.ApkVariantOutputImpl
 import java.util.*
 
 plugins {
