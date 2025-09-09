@@ -87,7 +87,7 @@ class MainDesign(
     init {
         binding.self = this
 
-        binding.colorClashStarted = context.resolveThemedColor(com.google.android.material.R.attr.colorPrimary)
+        binding.colorClashStarted = context.resolveThemedColor(androidx.appcompat.R.attr.colorPrimary)
         binding.colorClashStopped = context.resolveThemedColor(R.attr.colorClashStopped)
     }
 

@@ -34,7 +34,7 @@ jobs:
           cmake-version: '3.31.6'
 
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: "1.25"
 
@@ -52,6 +52,12 @@ jobs:
           sudo apt-get update && sudo apt-get install ca-certificates
           sudo update-ca-certificates
           cp -f /etc/ssl/certs/ca-certificates.crt core/src/foss/golang/clash/component/ca/ca-certificates.crt
+
+      - name: Extract KeyStore
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+        run: |
+          echo $KEYSTORE_B64 | base64 -d > ${{ github.workspace }}/keystore.jks
 
       - name: Signing properties
         env:

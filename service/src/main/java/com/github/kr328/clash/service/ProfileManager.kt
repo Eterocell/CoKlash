@@ -155,11 +155,12 @@ class ProfileManager(
     private suspend fun updateFlow(old: Imported) {
         val client = OkHttpClient()
         try {
+            val versionName = context.packageManager.getPackageInfo(context.packageName, 0).versionName
             val request =
                 Request
                     .Builder()
                     .url(old.source)
-                    .header("User-Agent", "ClashforWindows/0.19.23")
+                    .header("User-Agent", "ClashMetaForAndroid/$versionName")
                     .build()
 
             client.newCall(request).execute().use { response ->

@@ -1,6 +1,5 @@
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.internal.api.ApkVariantOutputImpl
 import java.util.*
 
 plugins {
@@ -31,8 +30,8 @@ subprojects {
             targetSdk = 36
             buildToolsVersion = "36.0.0"
 
-            versionName = "3.0.0-beta02"
-            versionCode = "03000020".toInt()
+            versionName = "3.0.0-beta04"
+            versionCode = "03000040".toInt()
 
             if (!isHideApi) {
                 vectorDrawables {
