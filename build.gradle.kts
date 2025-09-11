@@ -26,7 +26,7 @@ subprojects {
                 applicationId = "com.eterocell.mihomoforandroid"
             }
 
-            minSdk = 21
+            minSdk = 23
             targetSdk = 36
             buildToolsVersion = "36.0.0"
 
