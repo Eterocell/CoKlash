@@ -35,7 +35,7 @@ jobs:
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: '3.31.6'
+          cmake-version: '4.1.1'
 
       - name: Setup Go
         uses: actions/setup-go@v6
