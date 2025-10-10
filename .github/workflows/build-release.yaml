@@ -27,7 +27,7 @@ jobs:
 
       - name: Setup Gradle
         if: success()
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       - name: Setup ninja
         uses: seanmiddleditch/gha-setup-ninja@v6
