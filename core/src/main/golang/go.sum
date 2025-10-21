@@ -91,8 +91,8 @@ github.com/metacubex/amneziawg-go v0.0.0-20250902133113-a7f637c14281 h1:09EM0sOL
 github.com/metacubex/amneziawg-go v0.0.0-20250902133113-a7f637c14281/go.mod h1:MsM/5czONyXMJ3PRr5DbQ4O/BxzAnJWOIcJdLzW6qHY=
 github.com/metacubex/ascon v0.1.0 h1:6ZWxmXYszT1XXtwkf6nxfFhc/OTtQ9R3Vyj1jN32lGM=
 github.com/metacubex/ascon v0.1.0/go.mod h1:eV5oim4cVPPdEL8/EYaTZ0iIKARH9pnhAK/fcT5Kacc=
-github.com/metacubex/bart v0.24.0 h1:EyNiPeVOlg0joSHTzi5oentI0j5M89utUq/5dd76pWM=
-github.com/metacubex/bart v0.24.0/go.mod h1:DCcyfP4MC+Zy7sLK7XeGuMw+P5K9mIRsYOBgiE8icsI=
+github.com/metacubex/bart v0.26.0 h1:d/bBTvVatfVWGfQbiDpYKI1bXUJgjaabB2KpK1Tnk6w=
+github.com/metacubex/bart v0.26.0/go.mod h1:DCcyfP4MC+Zy7sLK7XeGuMw+P5K9mIRsYOBgiE8icsI=
 github.com/metacubex/bbolt v0.0.0-20250725135710-010dbbbb7a5b h1:j7dadXD8I2KTmMt8jg1JcaP1ANL3JEObJPdANKcSYPY=
 github.com/metacubex/bbolt v0.0.0-20250725135710-010dbbbb7a5b/go.mod h1:+WmP0VJZDkDszvpa83HzfUp6QzARl/IKkMorH4+nODw=
 github.com/metacubex/blake3 v0.1.0 h1:KGnjh/56REO7U+cgZA8dnBhxdP7jByrG7hTP+bu6cqY=
@@ -138,8 +138,8 @@ github.com/metacubex/smux v0.0.0-20250922175018-15c9a6a78719 h1:T6qCCfolRDAVJKea
 github.com/metacubex/smux v0.0.0-20250922175018-15c9a6a78719/go.mod h1:4bPD8HWx9jPJ9aE4uadgyN7D1/Wz3KmPy+vale8sKLE=
 github.com/metacubex/tfo-go v0.0.0-20250921095601-b102db4216c0 h1:Ui+/2s5Qz0lSnDUBmEL12M5Oi/PzvFxGTNohm8ZcsmE=
 github.com/metacubex/tfo-go v0.0.0-20250921095601-b102db4216c0/go.mod h1:l9oLnLoEXyGZ5RVLsh7QCC5XsouTUyKk4F2nLm2DHLw=
-github.com/metacubex/utls v1.8.1 h1:RW8GeCGWAegjV0HW5nw9DoqNoeGAXXeYUP6AysmRvx4=
-github.com/metacubex/utls v1.8.1/go.mod h1:kncGGVhFaoGn5M3pFe3SXhZCzsbCJayNOH4UEqTKTko=
+github.com/metacubex/utls v1.8.3 h1:0m/yCxm3SK6kWve2lKiFb1pue1wHitJ8sQQD4Ikqde4=
+github.com/metacubex/utls v1.8.3/go.mod h1:kncGGVhFaoGn5M3pFe3SXhZCzsbCJayNOH4UEqTKTko=
 github.com/metacubex/wireguard-go v0.0.0-20250820062549-a6cecdd7f57f h1:FGBPRb1zUabhPhDrlKEjQ9lgIwQ6cHL4x8M9lrERhbk=
 github.com/metacubex/wireguard-go v0.0.0-20250820062549-a6cecdd7f57f/go.mod h1:oPGcV994OGJedmmxrcK9+ni7jUEMGhR+uVQAdaduIP4=
 github.com/metacubex/yamux v0.0.0-20250918083631-dd5f17c0be49 h1:lhlqpYHopuTLx9xQt22kSA9HtnyTDmk5XjjQVCGHe2E=
