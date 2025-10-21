@@ -27,7 +27,7 @@ subprojects {
 
             minSdk = 23
             targetSdk = 36
-            buildToolsVersion = "36.0.0"
+            buildToolsVersion = "36.1.0"
 
             versionName = "3.0.0-beta05"
             versionCode = "03000050".toInt()
@@ -50,7 +50,7 @@ subprojects {
             }
         }
 
-        ndkVersion = "28.2.13676358"
+        ndkVersion = "29.0.14206865"
 
         compileSdkVersion(36)
 
