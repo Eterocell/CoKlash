@@ -43,7 +43,7 @@ require (
 	github.com/mdlayher/socket v0.4.1 // indirect
 	github.com/metacubex/amneziawg-go v0.0.0-20250902133113-a7f637c14281 // indirect
 	github.com/metacubex/ascon v0.1.0 // indirect
-	github.com/metacubex/bart v0.24.0 // indirect
+	github.com/metacubex/bart v0.26.0 // indirect
 	github.com/metacubex/bbolt v0.0.0-20250725135710-010dbbbb7a5b // indirect
 	github.com/metacubex/blake3 v0.1.0 // indirect
 	github.com/metacubex/chacha v0.1.5 // indirect
@@ -51,7 +51,7 @@ require (
 	github.com/metacubex/gopacket v1.1.20-0.20230608035415-7e2f98a3e759 // indirect
 	github.com/metacubex/gvisor v0.0.0-20250919004547-6122b699a301 // indirect
 	github.com/metacubex/kcp-go v0.0.0-20251007183319-0df1aec1639a // indirect
-	github.com/metacubex/mihomo v1.19.14 // indirect
+	github.com/metacubex/mihomo v1.19.15 // indirect
 	github.com/metacubex/nftables v0.0.0-20250708020511-be959b9e8902 // indirect
 	github.com/metacubex/quic-go v0.55.1-0.20251004050223-450bd9e32033 // indirect
 	github.com/metacubex/randv2 v0.2.0 // indirect
@@ -67,7 +67,7 @@ require (
 	github.com/metacubex/sing-wireguard v0.0.0-20250503063753-2dc62acc626f // indirect
 	github.com/metacubex/smux v0.0.0-20250922175018-15c9a6a78719 // indirect
 	github.com/metacubex/tfo-go v0.0.0-20250921095601-b102db4216c0 // indirect
-	github.com/metacubex/utls v1.8.1 // indirect
+	github.com/metacubex/utls v1.8.3 // indirect
 	github.com/metacubex/wireguard-go v0.0.0-20250820062549-a6cecdd7f57f // indirect
 	github.com/metacubex/yamux v0.0.0-20250918083631-dd5f17c0be49 // indirect
 	github.com/miekg/dns v1.1.63 // indirect
