@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.net.URI
 import java.net.URL
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
@@ -53,7 +54,7 @@ tasks.register("downloadGeoFiles") {
 
     doLast {
         geoFilesUrls.forEach { (downloadUrl, outputFileName) ->
-            val url = URL(downloadUrl)
+            val url = URI.create(downloadUrl).toURL()
             val outputPath = file("$geoFilesDownloadDir/$outputFileName")
             outputPath.parentFile.mkdirs()
             url.openStream().use { input ->
