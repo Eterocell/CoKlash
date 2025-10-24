@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.ksp) apply false
@@ -16,9 +17,9 @@ plugins {
 subprojects {
 
     val isApp = name == "app"
+    val isHideApi = name == "hideapi"
 
-    apply(plugin = if (isApp) "com.android.application" else "com.android.library")
-
+    plugins.apply(if (isApp) "com.android.application" else "com.android.library")
     extensions.configure<BaseExtension> {
         defaultConfig {
             if (isApp) {
@@ -31,6 +32,12 @@ subprojects {
 
             versionName = "3.0.0-beta05"
             versionCode = "03000050".toInt()
+
+            if (!isHideApi) {
+                vectorDrawables {
+                    useSupportLibrary = true
+                }
+            }
 
             resValue("string", "release_name", "v$versionName")
             resValue("integer", "release_code", "$versionCode")
@@ -124,11 +131,10 @@ subprojects {
 
         buildFeatures.apply {
             buildConfig = true
-            viewBinding {
-                isEnabled = name != "hideapi"
-            }
+            compose = !isHideApi
+            viewBinding = !isHideApi
             dataBinding {
-                isEnabled = name != "hideapi"
+                isEnabled = !isHideApi
             }
         }
 
@@ -153,10 +159,34 @@ subprojects {
             }
         }
 
-        dependencies.add("coreLibraryDesugaring", "com.android.tools:desugar_jdk_libs:2.1.5")
+        val libs: VersionCatalog = rootProject.extensions.getByType<VersionCatalogsExtension>().named("libs")
+
+        dependencies {
+            add("coreLibraryDesugaring", libs.findLibrary("android-desugar-jdk-libs").get())
+        }
+
+        if (!isHideApi) {
+            plugins.apply("org.jetbrains.kotlin.plugin.compose")
+
+            dependencies {
+                val composeBom = libs.findLibrary("androidx.compose.bom").get()
+                add("implementation", platform(composeBom))
+                add("testImplementation", platform(composeBom))
+                add("androidTestImplementation", platform(composeBom))
+                add("implementation", libs.findLibrary("androidx.compose.ui.tooling.preview").get())
+                add("debugImplementation", libs.findLibrary("androidx.compose.ui.tooling").get())
+            }
+        }
     }
 
-    val isHideApi = name == "hideapi"
+    // Disable androidTest tasks if no androidTest source directory exists
+    afterEvaluate {
+        if (!isHideApi && !project.projectDir.resolve("src/androidTest").exists()) {
+            tasks.matching { it.name.contains("AndroidTest") }.configureEach {
+                enabled = false
+            }
+        }
+    }
 
     // Disable androidTest tasks if no androidTest source directory exists
     afterEvaluate {
