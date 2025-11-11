@@ -19,6 +19,17 @@ subprojects {
 
     apply(plugin = if (isApp) "com.android.application" else "com.android.library")
 
+    fun queryConfigProperty(key: String): Any? {
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localProperties.load(localPropertiesFile.inputStream())
+        } else {
+            return null
+        }
+        return localProperties.getProperty(key)
+    }
+
     extensions.configure<BaseExtension> {
         defaultConfig {
             if (isApp) {
@@ -65,6 +76,8 @@ subprojects {
         productFlavors {
             flavorDimensions("feature")
 
+            val removeSuffix = (queryConfigProperty("remove.suffix") as? String)?.toBoolean() == true
+
             create("alpha") {
 
                 isDefault = true
@@ -78,7 +91,7 @@ subprojects {
                     resValue("string", "application_name", "@string/application_name_meta")
                 }
 
-                if (isApp) {
+                if (isApp && !removeSuffix) {
                     applicationIdSuffix = ".meta"
                 }
             }
