@@ -129,7 +129,7 @@ jobs:
           generate_release_notes: true
 
       - name: Release Changelog Builder
-        uses: mikepenz/release-changelog-builder-action@v6.0.0
+        uses: mikepenz/release-changelog-builder-action@v6.0.1
         with:
           configurationJson: |
             {
