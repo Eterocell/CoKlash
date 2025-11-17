@@ -30,9 +30,13 @@ class AppSettingsActivity :
             select<Unit> {
                 events.onReceive {
                     when (it) {
-                        Event.ClashStart, Event.ClashStop, Event.ServiceRecreated ->
+                        Event.ClashStart, Event.ClashStop, Event.ServiceRecreated -> {
                             recreate()
-                        else -> Unit
+                        }
+
+                        else -> {
+                            Unit
+                        }
                     }
                 }
                 design.requests.onReceive {

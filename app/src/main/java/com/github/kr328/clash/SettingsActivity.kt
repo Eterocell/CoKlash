@@ -17,14 +17,21 @@ class SettingsActivity : BaseActivity<SettingsDesign>() {
                 }
                 design.requests.onReceive {
                     when (it) {
-                        SettingsDesign.Request.StartApp ->
+                        SettingsDesign.Request.StartApp -> {
                             startActivity(AppSettingsActivity::class.intent)
-                        SettingsDesign.Request.StartNetwork ->
+                        }
+
+                        SettingsDesign.Request.StartNetwork -> {
                             startActivity(NetworkSettingsActivity::class.intent)
-                        SettingsDesign.Request.StartOverride ->
+                        }
+
+                        SettingsDesign.Request.StartOverride -> {
                             startActivity(OverrideSettingsActivity::class.intent)
-                        SettingsDesign.Request.StartMetaFeature ->
+                        }
+
+                        SettingsDesign.Request.StartMetaFeature -> {
                             startActivity(MetaFeatureSettingsActivity::class.intent)
+                        }
                     }
                 }
             }

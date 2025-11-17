@@ -54,6 +54,7 @@ class Broadcasts(
                             it.onServiceRecreated()
                         }
                     }
+
                     Intents.ACTION_CLASH_STARTED -> {
                         clashRunning = true
 
@@ -61,6 +62,7 @@ class Broadcasts(
                             it.onStarted()
                         }
                     }
+
                     Intents.ACTION_CLASH_STOPPED -> {
                         clashRunning = false
 
@@ -68,23 +70,30 @@ class Broadcasts(
                             it.onStopped(intent.getStringExtra(Intents.EXTRA_STOP_REASON))
                         }
                     }
-                    Intents.ACTION_PROFILE_CHANGED ->
+
+                    Intents.ACTION_PROFILE_CHANGED -> {
                         receivers.forEach {
                             it.onProfileChanged()
                         }
-                    Intents.ACTION_PROFILE_UPDATE_COMPLETED ->
+                    }
+
+                    Intents.ACTION_PROFILE_UPDATE_COMPLETED -> {
                         receivers.forEach {
                             it.onProfileUpdateCompleted(
                                 UUID.fromString(intent.getStringExtra(Intents.EXTRA_UUID)),
                             )
                         }
-                    Intents.ACTION_PROFILE_UPDATE_FAILED ->
+                    }
+
+                    Intents.ACTION_PROFILE_UPDATE_FAILED -> {
                         receivers.forEach {
                             it.onProfileUpdateFailed(
                                 UUID.fromString(intent.getStringExtra(Intents.EXTRA_UUID)),
                                 intent.getStringExtra(Intents.EXTRA_FAIL_REASON),
                             )
                         }
+                    }
+
                     Intents.ACTION_PROFILE_LOADED -> {
                         receivers.forEach {
                             it.onProfileLoaded()

@@ -69,6 +69,7 @@ class LogcatActivity : BaseActivity<LogcatDesign>() {
 
                     finish()
                 }
+
                 LogcatDesign.Request.Export -> {
                     val output =
                         startActivityForResult(
@@ -88,7 +89,10 @@ class LogcatActivity : BaseActivity<LogcatDesign>() {
                         }
                     }
                 }
-                else -> Unit
+
+                else -> {
+                    Unit
+                }
             }
         }
     }
@@ -116,7 +120,10 @@ class LogcatActivity : BaseActivity<LogcatDesign>() {
                             startActivity(LogsActivity::class.intent)
                             finish()
                         }
-                        else -> Unit
+
+                        else -> {
+                            Unit
+                        }
                     }
                 }
                 if (activityStarted) {

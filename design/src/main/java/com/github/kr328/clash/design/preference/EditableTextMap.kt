@@ -38,9 +38,11 @@ fun <K, V> PreferenceScreen.editableTextMap(
                         value == null -> {
                             this.summary = this.placeholder
                         }
+
                         value.isEmpty() -> {
                             this.summary = context.getString(R.string.empty)
                         }
+
                         else -> {
                             this.summary = context.getString(R.string.format_elements, value.size)
                         }

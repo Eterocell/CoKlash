@@ -52,6 +52,7 @@ class MetaFeatureSettingsActivity : BaseActivity<MetaFeatureSettingsDesign>() {
                                 finish()
                             }
                         }
+
                         MetaFeatureSettingsDesign.Request.ImportGeoIp -> {
                             val uri =
                                 startActivityForResult(
@@ -60,6 +61,7 @@ class MetaFeatureSettingsActivity : BaseActivity<MetaFeatureSettingsDesign>() {
                                 )
                             importGeoFile(uri, MetaFeatureSettingsDesign.Request.ImportGeoIp)
                         }
+
                         MetaFeatureSettingsDesign.Request.ImportGeoSite -> {
                             val uri =
                                 startActivityForResult(
@@ -68,6 +70,7 @@ class MetaFeatureSettingsActivity : BaseActivity<MetaFeatureSettingsDesign>() {
                                 )
                             importGeoFile(uri, MetaFeatureSettingsDesign.Request.ImportGeoSite)
                         }
+
                         MetaFeatureSettingsDesign.Request.ImportCountry -> {
                             val uri =
                                 startActivityForResult(
@@ -76,6 +79,7 @@ class MetaFeatureSettingsActivity : BaseActivity<MetaFeatureSettingsDesign>() {
                                 )
                             importGeoFile(uri, MetaFeatureSettingsDesign.Request.ImportCountry)
                         }
+
                         MetaFeatureSettingsDesign.Request.ImportASN -> {
                             val uri =
                                 startActivityForResult(
@@ -124,15 +128,25 @@ class MetaFeatureSettingsActivity : BaseActivity<MetaFeatureSettingsDesign>() {
                 }
                 val outputFileName =
                     when (importType) {
-                        MetaFeatureSettingsDesign.Request.ImportGeoIp ->
+                        MetaFeatureSettingsDesign.Request.ImportGeoIp -> {
                             "geoip$ext"
-                        MetaFeatureSettingsDesign.Request.ImportGeoSite ->
+                        }
+
+                        MetaFeatureSettingsDesign.Request.ImportGeoSite -> {
                             "geosite$ext"
-                        MetaFeatureSettingsDesign.Request.ImportCountry ->
+                        }
+
+                        MetaFeatureSettingsDesign.Request.ImportCountry -> {
                             "country$ext"
-                        MetaFeatureSettingsDesign.Request.ImportASN ->
+                        }
+
+                        MetaFeatureSettingsDesign.Request.ImportASN -> {
                             "ASN$ext"
-                        else -> ""
+                        }
+
+                        else -> {
+                            ""
+                        }
                     }
 
                 withContext(Dispatchers.IO) {

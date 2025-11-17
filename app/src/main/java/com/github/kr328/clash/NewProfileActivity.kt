@@ -43,10 +43,14 @@ class NewProfileActivity : BaseActivity<NewProfileDesign>() {
 
                                 val uuid: UUID? =
                                     when (val p = it.provider) {
-                                        is ProfileProvider.File ->
+                                        is ProfileProvider.File -> {
                                             create(Profile.Type.File, name)
-                                        is ProfileProvider.Url ->
+                                        }
+
+                                        is ProfileProvider.Url -> {
                                             create(Profile.Type.Url, name)
+                                        }
+
                                         is ProfileProvider.External -> {
                                             val data = p.get()
 
@@ -69,6 +73,7 @@ class NewProfileActivity : BaseActivity<NewProfileDesign>() {
                                 }
                             }
                         }
+
                         is NewProfileDesign.Request.OpenDetail -> {
                             launchAppDetailed(it.provider)
                         }

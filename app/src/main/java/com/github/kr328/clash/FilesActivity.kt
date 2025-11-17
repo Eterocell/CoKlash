@@ -48,7 +48,10 @@ class FilesActivity : BaseActivity<FilesDesign>() {
                         Event.ActivityStart, Event.ActivityStop -> {
                             design.fetch(client, stack, root)
                         }
-                        else -> Unit
+
+                        else -> {
+                            Unit
+                        }
                     }
                 }
                 design.requests.onReceive {
@@ -61,9 +64,11 @@ class FilesActivity : BaseActivity<FilesDesign>() {
                                     stack.pop()
                                 }
                             }
+
                             is FilesDesign.Request.OpenDirectory -> {
                                 stack.push(it.file.id)
                             }
+
                             is FilesDesign.Request.OpenFile -> {
                                 startActivityForResult(
                                     ActivityResultContracts.StartActivityForResult(),
@@ -74,14 +79,17 @@ class FilesActivity : BaseActivity<FilesDesign>() {
                                         ).grantPermissions(),
                                 )
                             }
+
                             is FilesDesign.Request.DeleteFile -> {
                                 client.deleteDocument(it.file.id)
                             }
+
                             is FilesDesign.Request.RenameFile -> {
                                 val newName = design.requestFileName(it.file.name)
 
                                 client.renameDocument(it.file.id, newName)
                             }
+
                             is FilesDesign.Request.ImportFile -> {
                                 val uri: Uri? =
                                     startActivityForResult(
@@ -99,6 +107,7 @@ class FilesActivity : BaseActivity<FilesDesign>() {
                                     }
                                 }
                             }
+
                             is FilesDesign.Request.ExportFile -> {
                                 val uri: Uri? =
                                     startActivityForResult(

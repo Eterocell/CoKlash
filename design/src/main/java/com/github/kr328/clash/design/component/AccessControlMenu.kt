@@ -28,49 +28,65 @@ class AccessControlMenu(
         }
 
         when (item.itemId) {
-            R.id.select_all ->
+            R.id.select_all -> {
                 requests.trySend(Request.SelectAll)
-            R.id.select_none ->
+            }
+
+            R.id.select_none -> {
                 requests.trySend(Request.SelectNone)
-            R.id.select_invert ->
+            }
+
+            R.id.select_invert -> {
                 requests.trySend(Request.SelectInvert)
+            }
+
             R.id.system_apps -> {
                 uiStore.accessControlSystemApp = !item.isChecked
 
                 requests.trySend(Request.ReloadApps)
             }
+
             R.id.name -> {
                 uiStore.accessControlSort = AppInfoSort.Label
 
                 requests.trySend(Request.ReloadApps)
             }
+
             R.id.package_name -> {
                 uiStore.accessControlSort = AppInfoSort.PackageName
 
                 requests.trySend(Request.ReloadApps)
             }
+
             R.id.install_time -> {
                 uiStore.accessControlSort = AppInfoSort.InstallTime
 
                 requests.trySend(Request.ReloadApps)
             }
+
             R.id.update_time -> {
                 uiStore.accessControlSort = AppInfoSort.UpdateTime
 
                 requests.trySend(Request.ReloadApps)
             }
+
             R.id.reverse -> {
                 uiStore.accessControlReverse = item.isChecked
 
                 requests.trySend(Request.ReloadApps)
             }
+
             R.id.import_from_clipboard -> {
                 requests.trySend(Request.Import)
             }
+
             R.id.export_to_clipboard -> {
                 requests.trySend(Request.Export)
             }
-            else -> return false
+
+            else -> {
+                return false
+            }
         }
 
         return true
@@ -80,14 +96,21 @@ class AccessControlMenu(
         menu.menuInflater.inflate(R.menu.menu_access_control, menu.menu)
 
         when (uiStore.accessControlSort) {
-            AppInfoSort.Label ->
+            AppInfoSort.Label -> {
                 menu.menu.findItem(R.id.name).isChecked = true
-            AppInfoSort.PackageName ->
+            }
+
+            AppInfoSort.PackageName -> {
                 menu.menu.findItem(R.id.package_name).isChecked = true
-            AppInfoSort.InstallTime ->
+            }
+
+            AppInfoSort.InstallTime -> {
                 menu.menu.findItem(R.id.install_time).isChecked = true
-            AppInfoSort.UpdateTime ->
+            }
+
+            AppInfoSort.UpdateTime -> {
                 menu.menu.findItem(R.id.update_time).isChecked = true
+            }
         }
 
         menu.menu.findItem(R.id.system_apps).isChecked = !uiStore.accessControlSystemApp

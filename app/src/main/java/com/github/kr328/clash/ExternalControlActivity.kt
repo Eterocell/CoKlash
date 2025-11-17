@@ -49,26 +49,29 @@ class ExternalControlActivity :
                 }
             }
 
-            Intents.ACTION_TOGGLE_CLASH ->
+            Intents.ACTION_TOGGLE_CLASH -> {
                 if (Remote.broadcasts.clashRunning) {
                     stopClash()
                 } else {
                     startClash()
                 }
+            }
 
-            Intents.ACTION_START_CLASH ->
+            Intents.ACTION_START_CLASH -> {
                 if (!Remote.broadcasts.clashRunning) {
                     startClash()
                 } else {
                     Toast.makeText(this, R.string.external_control_started, Toast.LENGTH_LONG).show()
                 }
+            }
 
-            Intents.ACTION_STOP_CLASH ->
+            Intents.ACTION_STOP_CLASH -> {
                 if (Remote.broadcasts.clashRunning) {
                     stopClash()
                 } else {
                     Toast.makeText(this, R.string.external_control_stopped, Toast.LENGTH_LONG).show()
                 }
+            }
         }
         return finish()
     }

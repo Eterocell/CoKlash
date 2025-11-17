@@ -5,11 +5,17 @@ import java.net.Inet6Address
 import java.net.InetAddress
 
 fun InetAddress.asSocketAddressText(port: Int): String = when (this) {
-    is Inet6Address ->
+    is Inet6Address -> {
         "[${numericToTextFormat(this)}]:$port"
-    is Inet4Address ->
+    }
+
+    is Inet4Address -> {
         "${this.hostAddress}:$port"
-    else -> throw IllegalArgumentException("Unsupported Inet type ${this.javaClass}")
+    }
+
+    else -> {
+        throw IllegalArgumentException("Unsupported Inet type ${this.javaClass}")
+    }
 }
 
 private const val INT16SZ = 2

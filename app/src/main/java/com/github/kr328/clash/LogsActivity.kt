@@ -28,7 +28,10 @@ class LogsActivity : BaseActivity<LogsDesign>() {
 
                             design.patchLogs(files)
                         }
-                        else -> Unit
+
+                        else -> {
+                            Unit
+                        }
                     }
                 }
                 design.requests.onReceive {
@@ -37,6 +40,7 @@ class LogsActivity : BaseActivity<LogsDesign>() {
                             startActivity(LogcatActivity::class.intent)
                             finish()
                         }
+
                         LogsDesign.Request.DeleteAll -> {
                             if (design.requestDeleteAll()) {
                                 withContext(Dispatchers.IO) {
@@ -46,6 +50,7 @@ class LogsActivity : BaseActivity<LogsDesign>() {
                                 events.trySend(Event.ActivityStart)
                             }
                         }
+
                         is LogsDesign.Request.OpenFile -> {
                             startActivity(LogcatActivity::class.intent.setFileName(it.file.fileName))
                         }

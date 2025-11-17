@@ -26,12 +26,17 @@ class ProxyView(
 
         val width =
             when (MeasureSpec.getMode(widthMeasureSpec)) {
-                MeasureSpec.UNSPECIFIED ->
+                MeasureSpec.UNSPECIFIED -> {
                     resources.displayMetrics.widthPixels
-                MeasureSpec.AT_MOST, MeasureSpec.EXACTLY ->
+                }
+
+                MeasureSpec.AT_MOST, MeasureSpec.EXACTLY -> {
                     MeasureSpec.getSize(widthMeasureSpec)
-                else ->
+                }
+
+                else -> {
                     throw IllegalArgumentException("invalid measure spec")
+                }
             }
 
         state.paint.apply {
@@ -53,12 +58,17 @@ class ProxyView(
 
         val height =
             when (MeasureSpec.getMode(heightMeasureSpec)) {
-                MeasureSpec.UNSPECIFIED ->
+                MeasureSpec.UNSPECIFIED -> {
                     exceptHeight
-                MeasureSpec.AT_MOST, MeasureSpec.EXACTLY ->
+                }
+
+                MeasureSpec.AT_MOST, MeasureSpec.EXACTLY -> {
                     exceptHeight.coerceAtMost(MeasureSpec.getSize(heightMeasureSpec))
-                else ->
+                }
+
+                else -> {
                     throw IllegalArgumentException("invalid measure spec")
+                }
             }
 
         setMeasuredDimension(width, height)

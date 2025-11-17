@@ -41,6 +41,7 @@ class ProfileReceiver : BroadcastReceiver() {
                     context.startForegroundServiceCompat(service)
                 }
             }
+
             Intents.ACTION_PROFILE_REQUEST_UPDATE -> {
                 val redirect = intent.setComponent(ProfileWorker::class.componentName)
 

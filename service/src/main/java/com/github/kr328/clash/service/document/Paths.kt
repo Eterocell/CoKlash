@@ -10,19 +10,23 @@ object Paths {
         val segments = path.split("/").filter { it.isNotBlank() && it != "." && it != ".." }
 
         return when (segments.size) {
-            0 ->
+            0 -> {
                 Path(
                     uuid = null,
                     scope = null,
                     relative = null,
                 )
-            1 ->
+            }
+
+            1 -> {
                 Path(
                     uuid = UUID.fromString(segments[0]),
                     scope = null,
                     relative = null,
                 )
-            2 ->
+            }
+
+            2 -> {
                 Path(
                     uuid = UUID.fromString(segments[0]),
                     scope =
@@ -33,7 +37,9 @@ object Paths {
                         },
                     relative = null,
                 )
-            else ->
+            }
+
+            else -> {
                 Path(
                     uuid = UUID.fromString(segments[0]),
                     scope =
@@ -44,6 +50,7 @@ object Paths {
                         },
                     relative = segments.drop(2),
                 )
+            }
         }
     }
 }

@@ -18,6 +18,7 @@ val Context.root: ViewGroup?
             is Activity -> {
                 findViewById(android.R.id.content)
             }
+
             else -> {
                 null
             }

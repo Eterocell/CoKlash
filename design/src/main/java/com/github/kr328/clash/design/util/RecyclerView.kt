@@ -118,10 +118,13 @@ fun RecyclerView.addScrolledToBottomObserver(listener: (RecyclerView, Boolean) -
 val RecyclerView.firstVisibleView: View?
     get() {
         return when (val mgr = layoutManager) {
-            is LinearLayoutManager ->
+            is LinearLayoutManager -> {
                 mgr.findViewByPosition(mgr.findFirstVisibleItemPosition())
-            else ->
+            }
+
+            else -> {
                 throw UnsupportedOperationException("unsupported manager: $mgr")
+            }
         }
     }
 
@@ -135,6 +138,7 @@ val RecyclerView.isBottom: Boolean
                 mgr.findFirstVisibleItemPosition() != 0 &&
                     mgr.findLastVisibleItemPosition() == adapter!!.itemCount - 1
             }
+
             else -> {
                 throw UnsupportedOperationException("unsupported layout manager")
             }

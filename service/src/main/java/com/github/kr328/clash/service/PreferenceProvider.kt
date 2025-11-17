@@ -13,16 +13,19 @@ class PreferenceProvider : PreferenceProvider() {
         private const val FILE_NAME = "service"
 
         fun createSharedPreferencesFromContext(context: Context): SharedPreferences = when (context) {
-            is BaseService, is TunService ->
+            is BaseService, is TunService -> {
                 context.getSharedPreferences(
                     FILE_NAME,
                     Context.MODE_PRIVATE,
                 )
-            else ->
+            }
+
+            else -> {
                 MultiProcessPreference(
                     context,
                     Authorities.SETTINGS_PROVIDER,
                 )
+            }
         }
     }
 }

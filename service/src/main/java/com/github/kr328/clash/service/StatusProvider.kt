@@ -23,7 +23,10 @@ class StatusProvider : ContentProvider() {
                     null
                 }
             }
-            else -> super.call(method, arg, extras)
+
+            else -> {
+                super.call(method, arg, extras)
+            }
         }
     }
 

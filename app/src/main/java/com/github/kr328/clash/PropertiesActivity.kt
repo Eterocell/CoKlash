@@ -62,10 +62,14 @@ class PropertiesActivity : BaseActivity<PropertiesDesign>() {
                                 }
                             }
                         }
+
                         Event.ServiceRecreated -> {
                             finish()
                         }
-                        else -> Unit
+
+                        else -> {
+                            Unit
+                        }
                     }
                 }
                 design.requests.onReceive {
@@ -73,6 +77,7 @@ class PropertiesActivity : BaseActivity<PropertiesDesign>() {
                         PropertiesDesign.Request.BrowseFiles -> {
                             startActivity(FilesActivity::class.intent.setUUID(uuid))
                         }
+
                         PropertiesDesign.Request.Commit -> {
                             design.verifyAndCommit()
                         }
@@ -87,9 +92,11 @@ class PropertiesActivity : BaseActivity<PropertiesDesign>() {
             profile.name.isBlank() -> {
                 showToast(R.string.empty_name, ToastDuration.Long)
             }
+
             profile.type != Profile.Type.File && profile.source.isBlank() -> {
                 showToast(R.string.invalid_url, ToastDuration.Long)
             }
+
             else -> {
                 try {
                     withProcessing { updateStatus ->

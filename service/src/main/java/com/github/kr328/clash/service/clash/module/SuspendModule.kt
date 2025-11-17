@@ -32,11 +32,13 @@ class SuspendModule(
 
                         Log.d("Clash resumed")
                     }
+
                     Intent.ACTION_SCREEN_OFF -> {
                         Clash.suspendCore(true)
 
                         Log.d("Clash suspended")
                     }
+
                     else -> {
                         // unreachable
 

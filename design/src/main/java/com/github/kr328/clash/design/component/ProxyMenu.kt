@@ -34,6 +34,7 @@ class ProxyMenu(
 
                 requests.trySend(ProxyDesign.Request.ReLaunch)
             }
+
             R.id.single -> {
                 uiStore.proxyLine = 1
 
@@ -41,6 +42,7 @@ class ProxyMenu(
 
                 requests.trySend(ProxyDesign.Request.ReloadAll)
             }
+
             R.id.doubles -> {
                 uiStore.proxyLine = 2
 
@@ -48,6 +50,7 @@ class ProxyMenu(
 
                 requests.trySend(ProxyDesign.Request.ReloadAll)
             }
+
             R.id.multiple -> {
                 uiStore.proxyLine = 3
 
@@ -55,34 +58,44 @@ class ProxyMenu(
 
                 requests.trySend(ProxyDesign.Request.ReloadAll)
             }
+
             R.id.default_ -> {
                 uiStore.proxySort = ProxySort.Default
 
                 requests.trySend(ProxyDesign.Request.ReloadAll)
             }
+
             R.id.name -> {
                 uiStore.proxySort = ProxySort.Title
 
                 requests.trySend(ProxyDesign.Request.ReloadAll)
             }
+
             R.id.delay -> {
                 uiStore.proxySort = ProxySort.Delay
 
                 requests.trySend(ProxyDesign.Request.ReloadAll)
             }
+
             R.id.dont_modify -> {
                 requests.trySend(ProxyDesign.Request.PatchMode(null))
             }
+
             R.id.direct_mode -> {
                 requests.trySend(ProxyDesign.Request.PatchMode(TunnelState.Mode.Direct))
             }
+
             R.id.global_mode -> {
                 requests.trySend(ProxyDesign.Request.PatchMode(TunnelState.Mode.Global))
             }
+
             R.id.rule_mode -> {
                 requests.trySend(ProxyDesign.Request.PatchMode(TunnelState.Mode.Rule))
             }
-            else -> return false
+
+            else -> {
+                return false
+            }
         }
 
         return true
@@ -107,10 +120,22 @@ class ProxyMenu(
             }
 
             when (mode) {
-                null -> findItem(R.id.dont_modify).isChecked = true
-                TunnelState.Mode.Direct -> findItem(R.id.direct_mode).isChecked = true
-                TunnelState.Mode.Global -> findItem(R.id.global_mode).isChecked = true
-                TunnelState.Mode.Rule -> findItem(R.id.rule_mode).isChecked = true
+                null -> {
+                    findItem(R.id.dont_modify).isChecked = true
+                }
+
+                TunnelState.Mode.Direct -> {
+                    findItem(R.id.direct_mode).isChecked = true
+                }
+
+                TunnelState.Mode.Global -> {
+                    findItem(R.id.global_mode).isChecked = true
+                }
+
+                TunnelState.Mode.Rule -> {
+                    findItem(R.id.rule_mode).isChecked = true
+                }
+
                 else -> {}
             }
         }

@@ -48,7 +48,10 @@ class ProxyActivity : BaseActivity<ProxyDesign>() {
                                 finish()
                             }
                         }
-                        else -> Unit
+
+                        else -> {
+                            Unit
+                        }
                     }
                 }
                 design.requests.onReceive {
@@ -58,11 +61,13 @@ class ProxyActivity : BaseActivity<ProxyDesign>() {
 
                             finish()
                         }
+
                         ProxyDesign.Request.ReloadAll -> {
                             names.indices.forEach { idx ->
                                 design.requests.trySend(ProxyDesign.Request.Reload(idx))
                             }
                         }
+
                         is ProxyDesign.Request.Reload -> {
                             launch {
                                 val group =
@@ -84,6 +89,7 @@ class ProxyActivity : BaseActivity<ProxyDesign>() {
                                 )
                             }
                         }
+
                         is ProxyDesign.Request.Select -> {
                             withClash {
                                 patchSelector(names[it.index], it.name)
@@ -93,6 +99,7 @@ class ProxyActivity : BaseActivity<ProxyDesign>() {
 
                             design.requestRedrawVisible()
                         }
+
                         is ProxyDesign.Request.UrlTest -> {
                             launch {
                                 withClash {
@@ -102,6 +109,7 @@ class ProxyActivity : BaseActivity<ProxyDesign>() {
                                 design.requests.send(ProxyDesign.Request.Reload(it.index))
                             }
                         }
+
                         is ProxyDesign.Request.PatchMode -> {
                             design.showModeSwitchTips()
 

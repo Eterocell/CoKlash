@@ -31,14 +31,19 @@ class ProfilesActivity : BaseActivity<ProfilesDesign>() {
                         Event.ActivityStart, Event.ProfileChanged -> {
                             design.fetch()
                         }
-                        else -> Unit
+
+                        else -> {
+                            Unit
+                        }
                     }
                 }
                 design.requests.onReceive {
                     when (it) {
-                        ProfilesDesign.Request.Create ->
+                        ProfilesDesign.Request.Create -> {
                             startActivity(NewProfileActivity::class.intent)
-                        ProfilesDesign.Request.UpdateAll ->
+                        }
+
+                        ProfilesDesign.Request.UpdateAll -> {
                             withProfile {
                                 try {
                                     queryAll().forEach { p ->
@@ -52,12 +57,20 @@ class ProfilesActivity : BaseActivity<ProfilesDesign>() {
                                     }
                                 }
                             }
-                        is ProfilesDesign.Request.Update ->
+                        }
+
+                        is ProfilesDesign.Request.Update -> {
                             withProfile { update(it.profile.uuid) }
-                        is ProfilesDesign.Request.Delete ->
+                        }
+
+                        is ProfilesDesign.Request.Delete -> {
                             withProfile { delete(it.profile.uuid) }
-                        is ProfilesDesign.Request.Edit ->
+                        }
+
+                        is ProfilesDesign.Request.Edit -> {
                             startActivity(PropertiesActivity::class.intent.setUUID(it.profile.uuid))
+                        }
+
                         is ProfilesDesign.Request.Active -> {
                             withProfile {
                                 if (it.profile.imported) {
@@ -67,6 +80,7 @@ class ProfilesActivity : BaseActivity<ProfilesDesign>() {
                                 }
                             }
                         }
+
                         is ProfilesDesign.Request.Duplicate -> {
                             val uuid = withProfile { clone(it.profile.uuid) }
 
