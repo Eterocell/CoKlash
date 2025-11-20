@@ -6,7 +6,7 @@ plugins {
 }
 
 val wrapper: Wrapper by tasks.named<Wrapper>("wrapper") {
-    gradleVersion = "9.1.0"
+    gradleVersion = "9.2.1"
     distributionType = Wrapper.DistributionType.ALL
     val sha256 =
         URI("$distributionUrl.sha256")
