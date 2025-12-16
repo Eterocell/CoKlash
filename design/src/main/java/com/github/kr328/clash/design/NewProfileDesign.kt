@@ -11,9 +11,17 @@ class NewProfileDesign(
     context: Context,
 ) : Design<NewProfileDesign.Request>(context) {
     sealed class Request {
-        data class Create(val provider: ProfileProvider) : Request()
-        data class OpenDetail(val provider: ProfileProvider.External) : Request()
-        data class LaunchScanner(val provider: ProfileProvider.QR) : Request()
+        data class Create(
+            val provider: ProfileProvider,
+        ) : Request()
+
+        data class OpenDetail(
+            val provider: ProfileProvider.External,
+        ) : Request()
+
+        data class LaunchScanner(
+            val provider: ProfileProvider.QR,
+        ) : Request()
     }
 
     private val binding =
@@ -47,7 +55,6 @@ class NewProfileDesign(
         } else {
             requests.trySend(Request.Create(provider))
         }
-
     }
 
     private fun requestDetail(provider: ProfileProvider): Boolean {

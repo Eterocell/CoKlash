@@ -45,7 +45,6 @@ class NewProfileActivity : BaseActivity<NewProfileDesign>() {
         while (isActive) {
             select<Unit> {
                 events.onReceive {
-
                 }
                 design.requests.onReceive {
                     when (it) {
@@ -53,36 +52,40 @@ class NewProfileActivity : BaseActivity<NewProfileDesign>() {
                             withProfile {
                                 val name = getString(R.string.new_profile)
 
-                                val uuid: UUID? = when (val p = it.provider) {
-                                    is ProfileProvider.File ->
-                                        create(Profile.Type.File, name)
+                                val uuid: UUID? =
+                                    when (val p = it.provider) {
+                                        is ProfileProvider.File -> {
+                                            create(Profile.Type.File, name)
+                                        }
 
-                                    is ProfileProvider.Url ->
-                                        create(Profile.Type.Url, name)
+                                        is ProfileProvider.Url -> {
+                                            create(Profile.Type.Url, name)
+                                        }
 
-                                    is ProfileProvider.QR -> {
-                                        null
-                                    }
-
-                                    is ProfileProvider.External -> {
-                                        val data = p.get()
-
-                                        if (data != null) {
-                                            val (uri, initialName) = data
-
-                                            create(
-                                                Profile.Type.External,
-                                                initialName ?: name,
-                                                uri.toString()
-                                            )
-                                        } else {
+                                        is ProfileProvider.QR -> {
                                             null
                                         }
-                                    }
-                                }
 
-                                if (uuid != null)
+                                        is ProfileProvider.External -> {
+                                            val data = p.get()
+
+                                            if (data != null) {
+                                                val (uri, initialName) = data
+
+                                                create(
+                                                    Profile.Type.External,
+                                                    initialName ?: name,
+                                                    uri.toString(),
+                                                )
+                                            } else {
+                                                null
+                                            }
+                                        }
+                                    }
+
+                                if (uuid != null) {
                                     launchProperties(uuid)
+                                }
                             }
                         }
 
@@ -178,15 +181,24 @@ class NewProfileActivity : BaseActivity<NewProfileDesign>() {
         lifecycleScope.launch {
             when (result) {
                 is QRSuccess -> {
-                    val url = result.content.rawValue
-                        ?: result.content.rawBytes?.let { String(it) }.orEmpty()
+                    val url =
+                        result.content.rawValue
+                            ?: result.content.rawBytes
+                                ?.let { String(it) }
+                                .orEmpty()
 
                     createProfileByQrCode(url)
                 }
 
                 QRUserCanceled -> {}
-                QRMissingPermission -> design?.showExceptionToast(getString(R.string.import_from_qr_no_permission))
-                is QRError -> design?.showExceptionToast(getString(R.string.import_from_qr_exception))
+
+                QRMissingPermission -> {
+                    design?.showExceptionToast(getString(R.string.import_from_qr_no_permission))
+                }
+
+                is QRError -> {
+                    design?.showExceptionToast(getString(R.string.import_from_qr_exception))
+                }
             }
         }
     }
@@ -202,5 +214,4 @@ class NewProfileActivity : BaseActivity<NewProfileDesign>() {
             )
         }
     }
-
 }
