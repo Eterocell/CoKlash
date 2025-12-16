@@ -45,31 +45,52 @@ fun Date.format(
     val locale = context.resources.configuration.preferredLocale
 
     return when {
-        includeDate && includeTime ->
+        includeDate && includeTime -> {
             SimpleDateFormat(DATE_ALL, locale).format(this)
-        includeDate ->
+        }
+
+        includeDate -> {
             SimpleDateFormat(DATE_DATE_ONLY, locale).format(this)
-        includeTime ->
+        }
+
+        includeTime -> {
             SimpleDateFormat(DATE_TIME_ONLY, locale).format(this)
-        else -> ""
+        }
+
+        else -> {
+            ""
+        }
     }
 }
 
 fun Long.toBytesString(): String = when {
-    this > 1024.0 * 1024 * 1024 * 1024 * 1024 * 1024 ->
+    this > 1024.0 * 1024 * 1024 * 1024 * 1024 * 1024 -> {
         String.format("%.2f EiB", (this.toDouble() / 1024 / 1024 / 1024 / 1024 / 1024 / 1024))
-    this > 1024.0 * 1024 * 1024 * 1024 * 1024 ->
+    }
+
+    this > 1024.0 * 1024 * 1024 * 1024 * 1024 -> {
         String.format("%.2f PiB", (this.toDouble() / 1024 / 1024 / 1024 / 1024 / 1024))
-    this > 1024.0 * 1024 * 1024 * 1024 ->
+    }
+
+    this > 1024.0 * 1024 * 1024 * 1024 -> {
         String.format("%.2f TiB", (this.toDouble() / 1024 / 1024 / 1024 / 1024))
-    this > 1024 * 1024 * 1024 ->
+    }
+
+    this > 1024 * 1024 * 1024 -> {
         String.format("%.2f GiB", (this.toDouble() / 1024 / 1024 / 1024))
-    this > 1024 * 1024 ->
+    }
+
+    this > 1024 * 1024 -> {
         String.format("%.2f MiB", (this.toDouble() / 1024 / 1024))
-    this > 1024 ->
+    }
+
+    this > 1024 -> {
         String.format("%.2f KiB", (this.toDouble() / 1024))
-    else ->
+    }
+
+    else -> {
         "$this Bytes"
+    }
 }
 
 fun Double.toProgress(): Int = this.toInt()

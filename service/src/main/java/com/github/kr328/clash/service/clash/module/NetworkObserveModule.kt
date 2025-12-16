@@ -116,13 +116,21 @@ class NetworkObserveModule(
         // wifi > ethernet > usb tethering > bluetooth tethering > cellular > satellite > other
         return when {
             capabilities == null -> 100
+
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN) -> 90
+
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> 0
+
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> 1
+
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_USB) -> 2
+
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> 3
+
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> 4
+
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_SATELLITE) -> 5
+
             // TRANSPORT_LOWPAN / TRANSPORT_THREAD / TRANSPORT_WIFI_AWARE are not for general internet access, which will not set as default route.
             else -> 20
         } + (if (entry.value.isAvailable()) 0 else 10)

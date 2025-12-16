@@ -162,12 +162,14 @@ class PropertiesDesign(
                 text = context.getString(R.string.format_fetching_configuration, status.args[0])
                 isIndeterminate = true
             }
+
             FetchStatus.Action.FetchProviders -> {
                 text = context.getString(R.string.format_fetching_provider, status.args[0])
                 isIndeterminate = false
                 max = status.max
                 progress = status.progress
             }
+
             FetchStatus.Action.Verifying -> {
                 text = context.getString(R.string.verifying)
                 isIndeterminate = false

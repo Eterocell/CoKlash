@@ -74,6 +74,7 @@ class ProfileWorker : BaseService() {
                     jobs.add(job)
                 }
             }
+
             Intents.ACTION_PROFILE_SCHEDULE_UPDATES -> {
                 val job =
                     launch {

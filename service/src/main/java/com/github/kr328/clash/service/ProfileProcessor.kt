@@ -99,21 +99,25 @@ object ProfileProcessor {
                                         for (flag in flags) {
                                             val info = flag.split("=")
                                             when {
-                                                info[0].contains("upload") && info[1].isNotEmpty() ->
+                                                info[0].contains("upload") && info[1].isNotEmpty() -> {
                                                     upload =
                                                         BigDecimal(info[1].split('.').first()).longValueExact()
+                                                }
 
-                                                info[0].contains("download") && info[1].isNotEmpty() ->
+                                                info[0].contains("download") && info[1].isNotEmpty() -> {
                                                     download =
                                                         BigDecimal(info[1].split('.').first()).longValueExact()
+                                                }
 
-                                                info[0].contains("total") && info[1].isNotEmpty() ->
+                                                info[0].contains("total") && info[1].isNotEmpty() -> {
                                                     total =
                                                         BigDecimal(info[1].split('.').first()).longValueExact()
+                                                }
 
-                                                info[0].contains("expire") && info[1].isNotEmpty() ->
+                                                info[0].contains("expire") && info[1].isNotEmpty() -> {
                                                     expire =
                                                         (info[1].toDouble() * 1000).toLong()
+                                                }
                                             }
                                         }
                                     }
@@ -280,17 +284,21 @@ object ProfileProcessor {
         val scheme = Uri.parse(source)?.scheme?.lowercase(Locale.getDefault())
 
         when {
-            name.isBlank() ->
+            name.isBlank() -> {
                 throw IllegalArgumentException("Empty name")
+            }
 
-            source.isEmpty() && type != Profile.Type.File ->
+            source.isEmpty() && type != Profile.Type.File -> {
                 throw IllegalArgumentException("Invalid url")
+            }
 
-            source.isNotEmpty() && scheme != "https" && scheme != "http" && scheme != "content" ->
+            source.isNotEmpty() && scheme != "https" && scheme != "http" && scheme != "content" -> {
                 throw IllegalArgumentException("Unsupported url $source")
+            }
 
-            interval != 0L && TimeUnit.MILLISECONDS.toMinutes(interval) < 15 ->
+            interval != 0L && TimeUnit.MILLISECONDS.toMinutes(interval) < 15 -> {
                 throw IllegalArgumentException("Invalid interval")
+            }
         }
     }
 }

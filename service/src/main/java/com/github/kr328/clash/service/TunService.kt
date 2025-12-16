@@ -169,12 +169,16 @@ class TunService :
 
                 // Access Control
                 when (store.accessControlMode) {
-                    AccessControlMode.AcceptAll -> Unit
+                    AccessControlMode.AcceptAll -> {
+                        Unit
+                    }
+
                     AccessControlMode.AcceptSelected -> {
                         (store.accessControlPackages + packageName).forEach {
                             runCatching { addAllowedApplication(it) }
                         }
                     }
+
                     AccessControlMode.DenySelected -> {
                         (store.accessControlPackages - packageName).forEach {
                             runCatching { addDisallowedApplication(it) }

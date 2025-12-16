@@ -28,6 +28,7 @@ class TileService : TileService() {
             Tile.STATE_INACTIVE -> {
                 startClashService()
             }
+
             Tile.STATE_ACTIVE -> {
                 stopClashService()
             }
@@ -92,11 +93,13 @@ class TileService : TileService() {
 
                         currentProfile = ""
                     }
+
                     Intents.ACTION_CLASH_STOPPED, Intents.ACTION_SERVICE_RECREATED -> {
                         clashRunning = false
 
                         currentProfile = ""
                     }
+
                     Intents.ACTION_PROFILE_LOADED -> {
                         currentProfile = StatusClient(this@TileService).currentProfile() ?: ""
                     }

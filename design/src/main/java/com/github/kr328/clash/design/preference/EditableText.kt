@@ -36,9 +36,11 @@ fun <T> PreferenceScreen.editableText(
                         value == null -> {
                             this.summary = this.placeholder
                         }
+
                         value.isEmpty() -> {
                             this.summary = this.empty
                         }
+
                         else -> {
                             this.summary = value
                         }

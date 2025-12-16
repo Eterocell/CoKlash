@@ -49,6 +49,9 @@ dependencies {
     implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    implementation(libs.quickie.bundled)
+    implementation(libs.androidx.activity.ktx)
 }
 
 tasks.getByName("clean", type = Delete::class) {

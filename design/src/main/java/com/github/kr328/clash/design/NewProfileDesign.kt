@@ -18,6 +18,10 @@ class NewProfileDesign(
         data class OpenDetail(
             val provider: ProfileProvider.External,
         ) : Request()
+
+        data class LaunchScanner(
+            val provider: ProfileProvider.QR,
+        ) : Request()
     }
 
     private val binding =
@@ -46,7 +50,11 @@ class NewProfileDesign(
     }
 
     private fun requestCreate(provider: ProfileProvider) {
-        requests.trySend(Request.Create(provider))
+        if (provider is ProfileProvider.QR) {
+            requests.trySend(Request.LaunchScanner(provider))
+        } else {
+            requests.trySend(Request.Create(provider))
+        }
     }
 
     private fun requestDetail(provider: ProfileProvider): Boolean {

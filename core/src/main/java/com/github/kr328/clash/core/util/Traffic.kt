@@ -19,16 +19,19 @@ private fun trafficString(scaled: Long): String = when {
 
         String.format("%.2f GiB", data.toFloat() / 100)
     }
+
     scaled > 1024 * 1024 * 100L -> {
         val data = scaled / 1024 / 1024
 
         String.format("%.2f MiB", data.toFloat() / 100)
     }
+
     scaled > 1024 * 100L -> {
         val data = scaled / 1024
 
         String.format("%.2f KiB", data.toFloat() / 100)
     }
+
     else -> {
         "$scaled Bytes"
     }

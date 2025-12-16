@@ -41,6 +41,7 @@ class MainActivity : BaseActivity<MainDesign>() {
                         Event.ClashStop, Event.ClashStart,
                         Event.ProfileLoaded, Event.ProfileChanged,
                         -> design.fetch()
+
                         else -> Unit
                     }
                 }
@@ -54,12 +55,19 @@ class MainActivity : BaseActivity<MainDesign>() {
                                 design.startClash()
                             }
                         }
-                        MainDesign.Request.OpenProxy ->
+
+                        MainDesign.Request.OpenProxy -> {
                             startActivity(ProxyActivity::class.intent)
-                        MainDesign.Request.OpenProfiles ->
+                        }
+
+                        MainDesign.Request.OpenProfiles -> {
                             startActivity(ProfilesActivity::class.intent)
-                        MainDesign.Request.OpenProviders ->
+                        }
+
+                        MainDesign.Request.OpenProviders -> {
                             startActivity(ProvidersActivity::class.intent)
+                        }
+
                         MainDesign.Request.OpenLogs -> {
                             if (LogcatService.running) {
                                 startActivity(LogcatActivity::class.intent)
@@ -67,12 +75,18 @@ class MainActivity : BaseActivity<MainDesign>() {
                                 startActivity(LogsActivity::class.intent)
                             }
                         }
-                        MainDesign.Request.OpenSettings ->
+
+                        MainDesign.Request.OpenSettings -> {
                             startActivity(SettingsActivity::class.intent)
-                        MainDesign.Request.OpenHelp ->
+                        }
+
+                        MainDesign.Request.OpenHelp -> {
                             startActivity(HelpActivity::class.intent)
-                        MainDesign.Request.OpenAbout ->
+                        }
+
+                        MainDesign.Request.OpenAbout -> {
                             design.showAbout(queryAppVersionName())
+                        }
                     }
                 }
                 if (clashRunning) {

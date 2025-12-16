@@ -99,10 +99,13 @@ class DynamicNotificationModule(
             select<Unit> {
                 screenToggle.onReceive {
                     when (it.action) {
-                        Intent.ACTION_SCREEN_ON ->
+                        Intent.ACTION_SCREEN_ON -> {
                             shouldUpdate = true
-                        Intent.ACTION_SCREEN_OFF ->
+                        }
+
+                        Intent.ACTION_SCREEN_OFF -> {
                             shouldUpdate = false
+                        }
                     }
                 }
                 profileLoaded.onReceive {

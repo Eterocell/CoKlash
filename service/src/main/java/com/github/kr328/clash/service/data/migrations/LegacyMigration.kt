@@ -76,12 +76,15 @@ private suspend fun migrationFromLegacy234(
                         1 -> { // TYPE_FILE
                             Profile.Type.File
                         }
+
                         2 -> { // TYPE_URL
                             Profile.Type.Url
                         }
+
                         3 -> { // TYPE_EXTERNAL
                             Profile.Type.External
                         }
+
                         else -> { // unknown
                             continue
                         }

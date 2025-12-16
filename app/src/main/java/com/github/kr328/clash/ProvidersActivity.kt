@@ -33,7 +33,10 @@ class ProvidersActivity : BaseActivity<ProvidersDesign>() {
                                 finish()
                             }
                         }
-                        else -> Unit
+
+                        else -> {
+                            Unit
+                        }
                     }
                 }
                 design.requests.onReceive {

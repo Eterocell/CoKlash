@@ -5,7 +5,7 @@ plugins {
     id("com.diffplug.spotless")
 }
 
-val ktlintVersion = "1.7.1"
+val ktlintVersion = "1.8.0"
 val genCopyright = false
 
 allprojects {

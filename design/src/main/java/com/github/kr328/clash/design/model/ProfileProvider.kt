@@ -29,6 +29,17 @@ sealed class ProfileProvider {
             get() = context.getDrawableCompat(R.drawable.ic_baseline_cloud_download)
     }
 
+    class QR(
+        private val context: Context,
+    ) : ProfileProvider() {
+        override val name: String
+            get() = context.getString(R.string.qr)
+        override val summary: String
+            get() = context.getString(R.string.import_from_qr)
+        override val icon: Drawable?
+            get() = context.getDrawableCompat(R.drawable.baseline_qr_code_scanner)
+    }
+
     class External(
         override val name: String,
         override val summary: String,
