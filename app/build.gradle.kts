@@ -6,17 +6,10 @@ import java.nio.file.StandardCopyOption
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.legacy.kapt)
 }
 
 android.namespace = "com.github.kr328.clash"
-
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_11)
-    }
-}
 
 dependencies {
     compileOnly(project(":hideapi"))

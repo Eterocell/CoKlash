@@ -1,17 +1,8 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
 }
 
 android.namespace = "com.github.kr328.clash.common"
-
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_11)
-    }
-}
 
 dependencies {
     compileOnly(project(":hideapi"))

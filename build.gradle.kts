@@ -5,12 +5,18 @@ import java.util.*
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
-    alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.legacy.kapt) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.ksp) apply false
 
     id("build-logic.root-project")
+}
+
+buildscript {
+    dependencies {
+        classpath(libs.gradle.plugin.kotlin)
+        classpath(libs.gradle.plugin.ksp)
+    }
 }
 
 subprojects {
@@ -123,6 +129,7 @@ subprojects {
         }
 
         buildFeatures.apply {
+            resValues = true
             buildConfig = true
             viewBinding {
                 isEnabled = name != "hideapi"
