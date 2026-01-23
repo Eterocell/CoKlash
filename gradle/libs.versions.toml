@@ -1,11 +1,11 @@
 [versions]
 android-desugar-jdk-libs = "2.1.5"
-agp = "8.13.2"
-kotlin = "2.2.21"
-ksp = "2.3.3"
+agp = "9.0.0"
+kotlin = "2.3.0"
+ksp = "2.3.4"
 coroutine = "1.10.2"
 coreKtx = "1.17.0"
-androidx-activity = "1.12.1"
+androidx-activity = "1.12.2"
 fragment = "1.8.9"
 appcompat = "1.7.1"
 coordinator = "1.3.0"
@@ -18,7 +18,7 @@ kaidl = "1.15"
 room = "2.8.4"
 multiprocess = "1.0.0"
 spotless = "8.1.0"
-androidx-compose-bom = "2025.12.00"
+androidx-compose-bom = "2026.01.00"
 androidx-navigation = "2.9.6"
 quickie = "1.11.0"
 
@@ -72,9 +72,8 @@ gradle-plugin-ksp = { group = "com.google.devtools.ksp", name = "com.google.devt
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+legacy-kapt = { id = "com.android.legacy-kapt", version.ref = "agp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 

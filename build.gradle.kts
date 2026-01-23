@@ -5,13 +5,19 @@ import java.util.*
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
-    alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
-    alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.legacy.kapt) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.ksp) apply false
 
     id("build-logic.root-project")
+}
+
+buildscript {
+    dependencies {
+        classpath(libs.gradle.plugin.kotlin)
+        classpath(libs.gradle.plugin.ksp)
+    }
 }
 
 subprojects {
@@ -30,8 +36,8 @@ subprojects {
             targetSdk = 36
             buildToolsVersion = "36.1.0"
 
-            versionName = "3.0.0-beta06"
-            versionCode = "03000060".toInt()
+            versionName = "3.0.0-beta07"
+            versionCode = "03000070".toInt()
 
             if (!isHideApi) {
                 vectorDrawables {
@@ -130,6 +136,7 @@ subprojects {
         }
 
         buildFeatures.apply {
+            resValues = true
             buildConfig = true
             compose = !isHideApi
             viewBinding = !isHideApi
