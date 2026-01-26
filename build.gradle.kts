@@ -157,9 +157,7 @@ subprojects {
 
         val libs: VersionCatalog = rootProject.extensions.getByType<VersionCatalogsExtension>().named("libs")
 
-        dependencies {
-            add("coreLibraryDesugaring", libs.findLibrary("android-desugar-jdk-libs").get())
-        }
+        dependencies.add("coreLibraryDesugaring", libs.findLibrary("android-desugar-jdk-libs").get())
     }
 
     configureAndroidApplication {
