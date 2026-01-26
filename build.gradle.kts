@@ -153,7 +153,9 @@ subprojects {
             isCoreLibraryDesugaringEnabled = true
         }
 
-        dependencies.add("coreLibraryDesugaring", "com.android.tools:desugar_jdk_libs:2.1.5")
+        val libs: VersionCatalog = rootProject.extensions.getByType<VersionCatalogsExtension>().named("libs")
+
+        dependencies.add("coreLibraryDesugaring", libs.findLibrary("android-desugar-jdk-libs").get())
     }
 
     configureAndroidApplication {

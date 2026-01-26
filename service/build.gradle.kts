@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.serialization)
@@ -30,11 +28,10 @@ dependencies {
 afterEvaluate {
     android {
         libraryVariants.forEach {
-            sourceSets[it.name].kotlin.srcDir(
+            sourceSets[it.name].kotlin.directories +=
                 layout.buildDirectory.asFile
                     .get()
-                    .resolve("generated/ksp/${it.name}/kotlin"),
-            )
+                    .resolve("generated/ksp/${it.name}/kotlin").toString()
             sourceSets[it.name].java.srcDir(
                 layout.buildDirectory.asFile
                     .get()

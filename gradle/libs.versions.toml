@@ -1,4 +1,5 @@
 [versions]
+android-desugar-jdk-libs = "2.1.5"
 agp = "9.0.0"
 kotlin = "2.3.0"
 ksp = "2.3.4"
@@ -20,6 +21,7 @@ spotless = "8.2.0"
 quickie = "1.11.0"
 
 [libraries]
+android-desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "android-desugar-jdk-libs" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlin-coroutine = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutine" }
 kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
