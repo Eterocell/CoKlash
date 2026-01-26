@@ -1,6 +1,8 @@
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.BaseExtension
-import java.util.*
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.DynamicFeatureExtension
+import com.android.build.api.dsl.LibraryExtension
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application) apply false
@@ -20,33 +22,63 @@ buildscript {
     }
 }
 
+val verCode = findProperty("VERSION_CODE") as? String ?: throw IllegalStateException("Should specify VERSION_CODE property in gradle.properties.")
+val verName = findProperty("VERSION_NAME") as? String ?: throw IllegalStateException("Should specify VERSION_NAME property in gradle.properties.")
+
+fun Project.withAndroidApplication(block: Plugin<in Any>.() -> Unit) =
+    plugins.withId("com.android.application", block)
+
+fun Project.withAndroidLibrary(block: Plugin<in Any>.() -> Unit) =
+    plugins.withId("com.android.library", block)
+
+fun Project.withAndroidDynamicFeature(block: Plugin<in Any>.() -> Unit) =
+    plugins.withId("com.android.dynamic-feature", block)
+
+fun Project.withAndroid(block: Plugin<in Any>.() -> Unit) {
+    withAndroidApplication(block)
+    withAndroidLibrary(block)
+    withAndroidDynamicFeature(block)
+}
+
+fun Project.configureAndroidCommon(action: Action<CommonExtension>) {
+    withAndroidApplication {
+        action.execute(extensions.getByType<ApplicationExtension>())
+    }
+    withAndroidLibrary {
+        action.execute(extensions.getByType<LibraryExtension>())
+    }
+    withAndroidDynamicFeature {
+        action.execute(extensions.getByType<DynamicFeatureExtension>())
+    }
+}
+
+fun Project.configureAndroidApplication(block: ApplicationExtension.() -> Unit) =
+    withAndroidApplication { extensions.configure(block) }
+
+fun Project.configureAndroidLibrary(block: LibraryExtension.() -> Unit) =
+    withAndroidLibrary { extensions.configure(block) }
+
+
 subprojects {
 
     val isApp = name == "app"
     val isHideApi = name == "hideapi"
 
-    plugins.apply(if (isApp) "com.android.application" else "com.android.library")
-    extensions.configure<BaseExtension> {
-        defaultConfig {
-            if (isApp) {
-                applicationId = "com.eterocell.mihomoforandroid"
-            }
+    apply(plugin = if (isApp) "com.android.application" else "com.android.library")
 
+    configureAndroidCommon {
+
+        ndkVersion = "29.0.14206865"
+        buildToolsVersion = "36.1.0"
+        compileSdk {
+            version = release(36)
+        }
+
+        defaultConfig.apply {
             minSdk = 23
-            targetSdk = 36
-            buildToolsVersion = "36.1.0"
 
-            versionName = "3.0.0-beta07"
-            versionCode = "03000070".toInt()
-
-            if (!isHideApi) {
-                vectorDrawables {
-                    useSupportLibrary = true
-                }
-            }
-
-            resValue("string", "release_name", "v$versionName")
-            resValue("integer", "release_code", "$versionCode")
+            resValue("string", "release_name", "v$verName")
+            resValue("integer", "release_code", verCode)
 
             ndk {
                 abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
@@ -57,32 +89,13 @@ subprojects {
                     abiFilters("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
                 }
             }
-
-            if (!isApp) {
-                consumerProguardFiles("consumer-rules.pro")
-            }
-        }
-
-        ndkVersion = "29.0.14206865"
-
-        compileSdkVersion(36)
-
-        if (isApp) {
-            packagingOptions {
-                resources {
-                    excludes.add("DebugProbesKt.bin")
-                }
-            }
         }
 
         productFlavors {
-            flavorDimensions("feature")
+            flavorDimensions += "feature"
 
             create("alpha") {
-
-                isDefault = true
-                dimension = flavorDimensionList[0]
-                versionNameSuffix = ".Meta.Alpha"
+                dimension = flavorDimensions.first()
 
                 buildConfigField("boolean", "PREMIUM", "Boolean.parseBoolean(\"false\")")
 
@@ -90,16 +103,12 @@ subprojects {
                     resValue("string", "launch_name", "@string/launch_name_meta")
                     resValue("string", "application_name", "@string/application_name_meta")
                 }
-
-                if (isApp) {
-                    applicationIdSuffix = ".meta"
-                }
             }
         }
 
         sourceSets {
             getByName("alpha") {
-                java.srcDirs("src/foss/java")
+                java.directories += "src/foss/java"
             }
         }
 
@@ -124,46 +133,26 @@ subprojects {
             named("release") {
                 isMinifyEnabled = isApp
                 isShrinkResources = isApp
-                signingConfig = signingConfigs.findByName("release")
                 proguardFiles(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro",
                 )
-            }
-            named("debug") {
-                versionNameSuffix = ".debug"
             }
         }
 
         buildFeatures.apply {
             resValues = true
             buildConfig = true
-            compose = !isHideApi
-            viewBinding = !isHideApi
-            dataBinding {
-                isEnabled = !isHideApi
+            viewBinding = name != "hideapi"
+            dataBinding.apply {
+                enable = name != "hideapi"
             }
         }
 
-        compileOptions {
+        compileOptions.apply {
             sourceCompatibility = JavaVersion.VERSION_11
             targetCompatibility = JavaVersion.VERSION_11
             isCoreLibraryDesugaringEnabled = true
-        }
-
-        if (isApp) {
-            this as AppExtension
-
-            splits {
-                abi {
-                    // Do not enable multiple APKs when building bundle
-                    val isBuildingBundle = gradle.startParameter.taskNames.any { it.lowercase().contains("bundle") }
-                    isEnable = !isBuildingBundle
-                    isUniversalApk = true
-                    reset()
-                    include("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
-                }
-            }
         }
 
         val libs: VersionCatalog = rootProject.extensions.getByType<VersionCatalogsExtension>().named("libs")
@@ -171,17 +160,63 @@ subprojects {
         dependencies {
             add("coreLibraryDesugaring", libs.findLibrary("android-desugar-jdk-libs").get())
         }
+    }
 
-        if (!isHideApi) {
-            plugins.apply("org.jetbrains.kotlin.plugin.compose")
+    configureAndroidApplication {
+        defaultConfig {
+            applicationId = "com.eterocell.mihomoforandroid"
 
-            dependencies {
-                val composeBom = libs.findLibrary("androidx.compose.bom").get()
-                add("implementation", platform(composeBom))
-                add("testImplementation", platform(composeBom))
-                add("androidTestImplementation", platform(composeBom))
-                add("implementation", libs.findLibrary("androidx.compose.ui.tooling.preview").get())
-                add("debugImplementation", libs.findLibrary("androidx.compose.ui.tooling").get())
+            targetSdk = 36
+
+            versionName = verName
+            versionCode = verCode.toInt()
+        }
+
+        packaging {
+            resources {
+                excludes.add("DebugProbesKt.bin")
+            }
+        }
+
+        productFlavors.named("alpha") {
+            isDefault = true
+            versionNameSuffix = ".Meta.Alpha"
+            applicationIdSuffix = ".meta"
+        }
+
+        buildTypes {
+            named("release") {
+                signingConfig = signingConfigs.findByName("release")
+            }
+            named("debug") {
+                versionNameSuffix = ".debug"
+            }
+        }
+
+        splits {
+            abi {
+                // Do not enable multiple APKs when building bundle
+                val isBuildingBundle = gradle.startParameter.taskNames.any { it.lowercase().contains("bundle") }
+                isEnable = !isBuildingBundle
+                isUniversalApk = true
+                reset()
+                include("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
+            }
+        }
+    }
+
+    configureAndroidLibrary {
+        defaultConfig {
+            consumerProguardFiles("consumer-rules.pro")
+        }
+
+        productFlavors.named("alpha") {
+            isDefault = true
+        }
+
+        buildTypes {
+            named("release") {
+                signingConfig = signingConfigs.findByName("release")
             }
         }
     }
