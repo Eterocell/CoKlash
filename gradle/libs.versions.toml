@@ -2,7 +2,7 @@
 android-desugar-jdk-libs = "2.1.5"
 agp = "9.0.0"
 kotlin = "2.3.0"
-ksp = "2.3.4"
+ksp = "2.3.5"
 coroutine = "1.10.2"
 coreKtx = "1.17.0"
 activity = "1.12.2"
