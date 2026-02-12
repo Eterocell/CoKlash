@@ -7,6 +7,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.legacy.kapt) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.ksp) apply false
@@ -55,6 +56,7 @@ fun Project.configureAndroidLibrary(block: LibraryExtension.() -> Unit) = withAn
 subprojects {
 
     val isApp = name == "app"
+    val isHideApi = name == "hideapi"
 
     apply(plugin = if (isApp) "com.android.application" else "com.android.library")
 
@@ -211,7 +213,14 @@ subprojects {
         }
     }
 
-    val isHideApi = name == "hideapi"
+    // Disable androidTest tasks if no androidTest source directory exists
+    afterEvaluate {
+        if (!isHideApi && !project.projectDir.resolve("src/androidTest").exists()) {
+            tasks.matching { it.name.contains("AndroidTest") }.configureEach {
+                enabled = false
+            }
+        }
+    }
 
     // Disable androidTest tasks if no androidTest source directory exists
     afterEvaluate {
