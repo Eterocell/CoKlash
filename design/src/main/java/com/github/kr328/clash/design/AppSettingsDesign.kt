@@ -103,6 +103,41 @@ class AppSettingsDesign(
                 ) {
                     enabled = !running
                 }
+
+                switch(
+                    value = uiStore::hideAppIcon,
+                    icon = R.drawable.ic_baseline_hide,
+                    title = R.string.hide_app_icon_title,
+                    summary = R.string.hide_app_icon_desc,
+                ) {
+                    listener =
+                        OnChangedListener {
+                            onHideIconChange(uiStore::hideAppIcon.get())
+                        }
+                }
+
+                switch(
+                    value = uiStore::hideFromRecents,
+                    icon = R.drawable.ic_baseline_stack,
+                    title = R.string.hide_from_recents_title,
+                    summary = R.string.hide_from_recents_desc,
+                ) {
+                    listener =
+                        OnChangedListener {
+                            requests.trySend(Request.ReCreateAllActivities)
+                        }
+                }
+
+                category(R.string.service)
+
+                switch(
+                    value = srvStore::dynamicNotification,
+                    icon = R.drawable.ic_baseline_domain,
+                    title = R.string.show_traffic,
+                    summary = R.string.show_traffic_summary,
+                ) {
+                    enabled = !running
+                }
             }
 
         binding.content.addView(screen.root)
