@@ -31,7 +31,8 @@ afterEvaluate {
             sourceSets[it.name].kotlin.directories +=
                 layout.buildDirectory.asFile
                     .get()
-                    .resolve("generated/ksp/${it.name}/kotlin").toString()
+                    .resolve("generated/ksp/${it.name}/kotlin")
+                    .toString()
             sourceSets[it.name].java.srcDir(
                 layout.buildDirectory.asFile
                     .get()

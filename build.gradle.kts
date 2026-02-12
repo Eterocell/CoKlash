@@ -25,14 +25,11 @@ buildscript {
 val verCode = findProperty("VERSION_CODE") as? String ?: throw IllegalStateException("Should specify VERSION_CODE property in gradle.properties.")
 val verName = findProperty("VERSION_NAME") as? String ?: throw IllegalStateException("Should specify VERSION_NAME property in gradle.properties.")
 
-fun Project.withAndroidApplication(block: Plugin<in Any>.() -> Unit) =
-    plugins.withId("com.android.application", block)
+fun Project.withAndroidApplication(block: Plugin<in Any>.() -> Unit) = plugins.withId("com.android.application", block)
 
-fun Project.withAndroidLibrary(block: Plugin<in Any>.() -> Unit) =
-    plugins.withId("com.android.library", block)
+fun Project.withAndroidLibrary(block: Plugin<in Any>.() -> Unit) = plugins.withId("com.android.library", block)
 
-fun Project.withAndroidDynamicFeature(block: Plugin<in Any>.() -> Unit) =
-    plugins.withId("com.android.dynamic-feature", block)
+fun Project.withAndroidDynamicFeature(block: Plugin<in Any>.() -> Unit) = plugins.withId("com.android.dynamic-feature", block)
 
 fun Project.withAndroid(block: Plugin<in Any>.() -> Unit) {
     withAndroidApplication(block)
@@ -52,12 +49,9 @@ fun Project.configureAndroidCommon(action: Action<CommonExtension>) {
     }
 }
 
-fun Project.configureAndroidApplication(block: ApplicationExtension.() -> Unit) =
-    withAndroidApplication { extensions.configure(block) }
+fun Project.configureAndroidApplication(block: ApplicationExtension.() -> Unit) = withAndroidApplication { extensions.configure(block) }
 
-fun Project.configureAndroidLibrary(block: LibraryExtension.() -> Unit) =
-    withAndroidLibrary { extensions.configure(block) }
-
+fun Project.configureAndroidLibrary(block: LibraryExtension.() -> Unit) = withAndroidLibrary { extensions.configure(block) }
 
 subprojects {
 
