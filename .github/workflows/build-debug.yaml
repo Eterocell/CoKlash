@@ -75,7 +75,7 @@ jobs:
         run: ./gradlew --no-daemon app:assembleAlphaRelease
           
       - name: Upload Aritfact (universal)
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: ${{  success() }}
         with:
           name: CMFA Debug Unsigned APK (universal) 
@@ -83,7 +83,7 @@ jobs:
             app/build/outputs/apk/alpha/debug/*-universal-*.apk
       
       - name: Upload Aritfact (arm64-v8a)
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: ${{  success() }}
         with:
           name: CMFA Debug Unsigned APK (arm64-v8a)
@@ -91,7 +91,7 @@ jobs:
             app/build/outputs/apk/alpha/debug/*-arm64-v8a-*.apk
       
       - name: Upload Aritfact (armeabi-v7a)
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: ${{  success() }}
         with:
           name: CMFA Debug Unsigned APK (armeabi-v7a)
@@ -99,7 +99,7 @@ jobs:
             app/build/outputs/apk/alpha/debug/*-armeabi-v7a-*.apk
       
       - name: Upload Aritfact (x86_64)
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: ${{  success() }}
         with:
           name: CMFA Debug Unsigned APK (x86_64)
@@ -107,7 +107,7 @@ jobs:
             app/build/outputs/apk/alpha/debug/*-x86_64-*.apk
       
       - name: Upload Aritfact (x86)
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: ${{  success() }}
         with:
           name: CMFA Debug Unsigned APK (x86)
