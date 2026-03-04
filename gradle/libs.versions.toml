@@ -1,6 +1,6 @@
 [versions]
 android-desugar-jdk-libs = "2.1.5"
-agp = "9.0.1"
+agp = "9.1.0"
 kotlin = "2.3.10"
 ksp = "2.3.6"
 coroutine = "1.10.2"
