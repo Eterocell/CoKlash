@@ -27,7 +27,7 @@ jobs:
 
       - name: Setup Gradle
         if: success()
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
 
       - name: Setup ninja
         uses: seanmiddleditch/gha-setup-ninja@v6
@@ -48,7 +48,7 @@ jobs:
           cd $(go env GOROOT)
           for p in $GITHUB_WORKSPACE/.github/patch/*.patch; do patch --verbose -p 1 < "$p"; done
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: |
             ~/.cache/go-build
