@@ -70,7 +70,7 @@ jobs:
 
       # Re-write version in build.gradle.kts
       - name: Re-write version
-        uses: Devofure/advance-android-version-actions@v1.5
+        uses: Devofure/advance-android-version-actions@v1.6.1
         with:
           gradlePath: build.gradle.kts
           versionCode: ${{ steps.process-version.outputs.versonCode }}
