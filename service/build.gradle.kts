@@ -24,20 +24,3 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
 }
-
-afterEvaluate {
-    android {
-        libraryVariants.forEach {
-            sourceSets[it.name].kotlin.directories +=
-                layout.buildDirectory.asFile
-                    .get()
-                    .resolve("generated/ksp/${it.name}/kotlin")
-                    .toString()
-            sourceSets[it.name].java.srcDir(
-                layout.buildDirectory.asFile
-                    .get()
-                    .resolve("generated/ksp/${it.name}/java"),
-            )
-        }
-    }
-}

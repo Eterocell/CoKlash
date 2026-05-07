@@ -56,10 +56,8 @@ dependencies {
     implementation(libs.kotlin.serialization.json)
 }
 
-afterEvaluate {
-    tasks.withType(GolangBuildTask::class.java).forEach {
-        it.inputs.dir(golangSource)
-    }
+tasks.withType(GolangBuildTask::class.java).configureEach {
+    inputs.dir(golangSource)
 }
 
 val abis = listOf("arm64-v8a" to "Arm64V8a", "armeabi-v7a" to "ArmeabiV7a", "x86" to "X86", "x86_64" to "X8664")

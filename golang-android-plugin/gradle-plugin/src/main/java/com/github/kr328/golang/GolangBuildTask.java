@@ -1,17 +1,25 @@
 package com.github.kr328.golang;
 
-import com.android.build.gradle.BaseExtension;
-import com.android.build.gradle.api.BaseVariant;
 import org.apache.tools.ant.taskdefs.condition.Os;
+import org.gradle.api.file.Directory;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.provider.ListProperty;
+import org.gradle.api.provider.Property;
+import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.Exec;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputDirectory;
+import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.OutputDirectory;
+import org.gradle.api.tasks.PathSensitive;
+import org.gradle.api.tasks.PathSensitivity;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class GolangBuildTask extends Exec {
     private static Map<String, String> environmentOf(File ndk, String abi, int sdkVersion) {
@@ -76,17 +84,36 @@ public abstract class GolangBuildTask extends Exec {
     }
 
     public GolangBuildTask applyFor(
-            BaseExtension base,
-            BaseVariant variant,
-            String abi, File source,
+            String abi,
+            Provider<Directory> ndkDirectory,
+            int minSdk,
+            boolean debuggable,
+            File source,
             File output,
             String fileName,
             Collection<String> tags,
             String packageName
     ) {
+        getAbi().set(abi);
+        getNdkDirectory().set(ndkDirectory);
+        getNdkDirectoryPath().set(ndkDirectory.map(directory -> directory.getAsFile().getAbsolutePath()));
+        getMinSdk().set(minSdk);
+        getDebuggable().set(debuggable);
         getGolangSource().set(source);
         getGolangOutput().set(output);
+        getFileName().set(fileName);
         getTags().set(tags);
+        getPackageName().set(packageName == null ? "" : packageName);
+
+        doFirst(task -> configureExecution());
+
+        return this;
+    }
+
+    private void configureExecution() {
+        String fileName = getFileName().get();
+        File outputDirectory = getGolangOutput().get().getAsFile();
+        outputDirectory.mkdirs();
 
         ArrayList<String> commands = new ArrayList<>();
 
@@ -98,39 +125,60 @@ public abstract class GolangBuildTask extends Exec {
         commands.add("-o");
         commands.add(getGolangOutput().file(fileName).get().getAsFile().getAbsolutePath());
 
-        ArrayList<String> prependTags = new ArrayList<>(getTags().get());
-//        if (variant.getBuildType().isDebuggable()) {
-//            prependTags.add("debug");
-//        }
-
+        List<String> prependTags = new ArrayList<>(getTags().get());
         if (!prependTags.isEmpty()) {
             commands.add("-tags");
             commands.add(String.join(",", prependTags));
         }
 
-        if (variant.getBuildType().isDebuggable()) {
+        if (getDebuggable().get()) {
             commands.add("-ldflags=-extldflags=-Wl,-z,max-page-size=16384");
         } else {
             commands.add("-ldflags=-s -w -extldflags=-Wl,-z,max-page-size=16384");
         }
 
+        String packageName = getPackageName().get();
         if (!packageName.isEmpty()) {
             commands.add(packageName);
         }
 
-        environment(environmentOf(base.getNdkDirectory(), abi, Objects.requireNonNull(base.getDefaultConfig().getMinSdk())));
-        workingDir(getGolangSource());
+        environment(environmentOf(
+                new File(getNdkDirectoryPath().get()),
+                getAbi().get(),
+                getMinSdk().get()
+        ));
+        workingDir(getGolangSource().get().getAsFile());
         commandLine(commands);
-
-        return this;
     }
 
+    @Input
+    public abstract Property<String> getAbi();
+
+    @Internal
+    public abstract DirectoryProperty getNdkDirectory();
+
+    @Input
+    public abstract Property<String> getNdkDirectoryPath();
+
+    @Input
+    public abstract Property<Integer> getMinSdk();
+
+    @Input
+    public abstract Property<Boolean> getDebuggable();
+
     @InputDirectory
+    @PathSensitive(PathSensitivity.RELATIVE)
     public abstract DirectoryProperty getGolangSource();
 
     @OutputDirectory
     public abstract DirectoryProperty getGolangOutput();
 
     @Input
+    public abstract Property<String> getFileName();
+
+    @Input
     public abstract ListProperty<String> getTags();
+
+    @Input
+    public abstract Property<String> getPackageName();
 }
