@@ -32,11 +32,13 @@ class UiStore(
 
     var hideAppIcon: Boolean by store.boolean(
         key = "hide_app_icon",
-        defaultValue = context.packageManager.getComponentEnabledSetting(context.mainActivityAlias)
-            .let { state ->
-                state != PackageManager.COMPONENT_ENABLED_STATE_ENABLED &&
+        defaultValue =
+            context.packageManager
+                .getComponentEnabledSetting(context.mainActivityAlias)
+                .let { state ->
+                    state != PackageManager.COMPONENT_ENABLED_STATE_ENABLED &&
                         state != PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
-            },
+                },
     )
 
     var hideFromRecents: Boolean by store.boolean(

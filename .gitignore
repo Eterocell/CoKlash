@@ -5,6 +5,7 @@ build/
 /captures
 .kotlin/
 .claude/
+.worktrees/
 
 # Ignore Gradle GUI config
 gradle-app.setting
