@@ -2,4 +2,10 @@
 <resources>
     <string name="receive_clash_broadcasts">Receive Clash Broadcasts</string>
     <string name="receive_broadcasts_of_clash">Receive broadcasts of clash services</string>
+
+    <!-- Shared app names -->
+    <string name="launch_name_meta">Clash Meta</string>
+    <string name="launch_name_alpha">Clash Meta Alpha</string>
+    <string name="application_name_meta">Clash Meta for Android</string>
+    <string name="application_name_alpha">Clash Meta for Android Alpha</string>
 </resources>
