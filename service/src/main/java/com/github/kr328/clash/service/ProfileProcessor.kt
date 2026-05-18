@@ -127,28 +127,34 @@ object ProfileProcessor {
                                     if (response.isSuccessful && updateIntervalHeader != null) {
                                         val intervalHours = updateIntervalHeader.toLongOrNull()
                                         if (intervalHours != null) {
-                                            updateInterval = if (intervalHours > 0) {
-                                                java.util.concurrent.TimeUnit.HOURS.toMillis(intervalHours)
-                                                    .coerceAtLeast(java.util.concurrent.TimeUnit.MINUTES.toMillis(15))
-                                            } else {
-                                                0L
-                                            }
+                                            updateInterval =
+                                                if (intervalHours > 0) {
+                                                    java.util.concurrent.TimeUnit.HOURS
+                                                        .toMillis(intervalHours)
+                                                        .coerceAtLeast(
+                                                            java.util.concurrent.TimeUnit.MINUTES
+                                                                .toMillis(15),
+                                                        )
+                                                } else {
+                                                    0L
+                                                }
                                         }
                                     }
                                 }
                             }
-                            val new = Imported(
-                                snapshot.uuid,
-                                snapshot.name,
-                                snapshot.type,
-                                snapshot.source,
-                                updateInterval,
-                                upload,
-                                download,
-                                total,
-                                expire,
-                                old?.createdAt ?: System.currentTimeMillis()
-                            )
+                            val new =
+                                Imported(
+                                    snapshot.uuid,
+                                    snapshot.name,
+                                    snapshot.type,
+                                    snapshot.source,
+                                    updateInterval,
+                                    upload,
+                                    download,
+                                    total,
+                                    expire,
+                                    old?.createdAt ?: System.currentTimeMillis(),
+                                )
                             if (old != null) {
                                 ImportedDao().update(new)
                             } else {

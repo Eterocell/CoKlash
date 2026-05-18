@@ -13,7 +13,6 @@ import java.io.FileOutputStream
 
 @Suppress("unused")
 class MainApplication : Application() {
-
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
 
