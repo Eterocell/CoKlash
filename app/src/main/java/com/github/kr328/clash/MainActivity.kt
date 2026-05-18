@@ -3,6 +3,7 @@ package com.github.kr328.clash
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -14,7 +15,6 @@ import com.github.kr328.clash.common.util.intent
 import com.github.kr328.clash.common.util.ticker
 import com.github.kr328.clash.core.bridge.*
 import com.github.kr328.clash.design.MainDesign
-import com.github.kr328.clash.design.R
 import com.github.kr328.clash.design.ui.ToastDuration
 import com.github.kr328.clash.util.startClashService
 import com.github.kr328.clash.util.stopClashService
@@ -185,7 +185,7 @@ class MainActivity : BaseActivity<MainDesign>() {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val requestPermissionLauncher =
-                registerForActivityResult(RequestPermission()) { isGranted: Boolean ->
+                registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
                 }
             if (ContextCompat.checkSelfPermission(
                     this,
