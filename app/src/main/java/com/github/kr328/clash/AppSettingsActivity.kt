@@ -2,9 +2,7 @@ package com.github.kr328.clash
 
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -12,14 +10,11 @@ import com.github.kr328.clash.common.util.componentName
 import com.github.kr328.clash.design.compose.AppSettingsScreen
 import com.github.kr328.clash.design.compose.theme.CoKlashTheme
 import com.github.kr328.clash.design.model.DarkMode
-import com.github.kr328.clash.design.store.UiStore
 import com.github.kr328.clash.design.store.UiStore.Companion.mainActivityAlias
-import com.github.kr328.clash.remote.Remote
 import com.github.kr328.clash.service.store.ServiceStore
 import com.github.kr328.clash.util.ApplicationObserver
 
-class AppSettingsActivity : ComponentActivity() {
-    private lateinit var uiStore: UiStore
+class AppSettingsActivity : BaseComposeActivity() {
     private lateinit var srvStore: ServiceStore
 
     private var autoRestart by mutableStateOf(false)
@@ -30,12 +25,10 @@ class AppSettingsActivity : ComponentActivity() {
     private var isRunning by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        uiStore = UiStore(this)
         srvStore = ServiceStore(this)
-        isRunning = Remote.broadcasts.clashRunning
+        isRunning = clashRunning
 
         loadState()
 
