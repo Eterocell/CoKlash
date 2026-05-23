@@ -2,19 +2,25 @@ package com.github.kr328.clash
 
 import android.content.Intent
 import android.net.Uri
-import com.github.kr328.clash.design.ApkBrokenDesign
-import kotlinx.coroutines.isActive
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import com.github.kr328.clash.design.compose.ApkBrokenScreen
+import com.github.kr328.clash.design.compose.theme.CoKlashTheme
 
-class ApkBrokenActivity : BaseActivity<ApkBrokenDesign>() {
-    override suspend fun main() {
-        val design = ApkBrokenDesign(this)
-
-        setContentDesign(design)
-
-        while (isActive) {
-            val req = design.requests.receive()
-
-            startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(req.url)))
+class ApkBrokenActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
+        setContent {
+            CoKlashTheme {
+                ApkBrokenScreen(
+                    onLinkClick = { uri ->
+                        startActivity(Intent(Intent.ACTION_VIEW).setData(uri))
+                    },
+                )
+            }
         }
     }
 }
