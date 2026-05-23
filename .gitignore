@@ -6,6 +6,7 @@ build/
 .kotlin/
 .claude/
 .worktrees/
+.omo/
 
 # Ignore Gradle GUI config
 gradle-app.setting
