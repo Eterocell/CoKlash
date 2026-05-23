@@ -1,89 +1,117 @@
 package com.github.kr328.clash
 
-import android.content.ComponentName
 import android.content.pm.PackageManager
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.github.kr328.clash.common.util.componentName
-import com.github.kr328.clash.design.AppSettingsDesign
-import com.github.kr328.clash.design.model.Behavior
+import com.github.kr328.clash.design.compose.AppSettingsScreen
+import com.github.kr328.clash.design.compose.theme.CoKlashTheme
+import com.github.kr328.clash.design.model.DarkMode
+import com.github.kr328.clash.design.store.UiStore
 import com.github.kr328.clash.design.store.UiStore.Companion.mainActivityAlias
+import com.github.kr328.clash.remote.Remote
 import com.github.kr328.clash.service.store.ServiceStore
 import com.github.kr328.clash.util.ApplicationObserver
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.selects.select
 
-class AppSettingsActivity :
-    BaseActivity<AppSettingsDesign>(),
-    Behavior {
-    override suspend fun main() {
-        val design =
-            AppSettingsDesign(
-                this,
-                uiStore,
-                ServiceStore(this),
-                this,
-                clashRunning,
-                ::onHideIconChange,
-            )
+class AppSettingsActivity : ComponentActivity() {
+    private lateinit var uiStore: UiStore
+    private lateinit var srvStore: ServiceStore
 
-        setContentDesign(design)
+    private var autoRestart by mutableStateOf(false)
+    private var darkMode by mutableStateOf(DarkMode.Auto)
+    private var dynamicNotification by mutableStateOf(false)
+    private var hideAppIcon by mutableStateOf(false)
+    private var hideFromRecents by mutableStateOf(false)
+    private var isRunning by mutableStateOf(false)
 
-        while (isActive) {
-            select<Unit> {
-                events.onReceive {
-                    when (it) {
-                        Event.ClashStart, Event.ClashStop, Event.ServiceRecreated -> {
-                            recreate()
-                        }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
 
-                        else -> {
-                            Unit
-                        }
-                    }
-                }
-                design.requests.onReceive {
-                    ApplicationObserver.createdActivities.forEach {
-                        it.recreate()
-                    }
-                }
+        uiStore = UiStore(this)
+        srvStore = ServiceStore(this)
+        isRunning = Remote.broadcasts.clashRunning
+
+        loadState()
+
+        setContent {
+            CoKlashTheme {
+                AppSettingsScreen(
+                    onBackClick = { finish() },
+                    autoRestart = autoRestart,
+                    onAutoRestartChange = ::onAutoRestartChange,
+                    darkMode = darkMode,
+                    onDarkModeChange = ::onDarkModeChange,
+                    dynamicNotification = dynamicNotification,
+                    onDynamicNotificationChange = ::onDynamicNotificationChange,
+                    isRunning = isRunning,
+                    hideAppIcon = hideAppIcon,
+                    onHideAppIconChange = ::onHideAppIconChange,
+                    hideFromRecents = hideFromRecents,
+                    onHideFromRecentsChange = ::onHideFromRecentsChange,
+                )
             }
         }
     }
 
-    override var autoRestart: Boolean
-        get() {
-            val status =
-                packageManager.getComponentEnabledSetting(
-                    RestartReceiver::class.componentName,
-                )
+    private fun loadState() {
+        autoRestart = packageManager.getComponentEnabledSetting(
+            RestartReceiver::class.componentName,
+        ) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+        darkMode = uiStore.darkMode
+        dynamicNotification = srvStore.dynamicNotification
+        hideAppIcon = uiStore.hideAppIcon
+        hideFromRecents = uiStore.hideFromRecents
+    }
 
-            return status == PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+    private fun onAutoRestartChange(value: Boolean) {
+        autoRestart = value
+        val status = if (value) {
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+        } else {
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED
         }
-        set(value) {
-            val status =
-                if (value) {
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-                } else {
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED
-                }
+        packageManager.setComponentEnabledSetting(
+            RestartReceiver::class.componentName,
+            status,
+            PackageManager.DONT_KILL_APP,
+        )
+    }
 
-            packageManager.setComponentEnabledSetting(
-                RestartReceiver::class.componentName,
-                status,
-                PackageManager.DONT_KILL_APP,
-            )
+    private fun onDarkModeChange(mode: DarkMode) {
+        darkMode = mode
+        uiStore.darkMode = mode
+        ApplicationObserver.createdActivities.forEach { it.recreate() }
+    }
+
+    private fun onDynamicNotificationChange(value: Boolean) {
+        dynamicNotification = value
+        srvStore.dynamicNotification = value
+    }
+
+    private fun onHideAppIconChange(value: Boolean) {
+        hideAppIcon = value
+        uiStore.hideAppIcon = value
+        val newState = if (value) {
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+        } else {
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED
         }
-
-    private fun onHideIconChange(hide: Boolean) {
-        val newState =
-            if (hide) {
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED
-            } else {
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-            }
         packageManager.setComponentEnabledSetting(
             mainActivityAlias,
             newState,
             PackageManager.DONT_KILL_APP,
         )
+    }
+
+    private fun onHideFromRecentsChange(value: Boolean) {
+        hideFromRecents = value
+        uiStore.hideFromRecents = value
+        ApplicationObserver.createdActivities.forEach { it.recreate() }
     }
 }
