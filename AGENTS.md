@@ -99,6 +99,20 @@ ComponentActivity (no AppCompat)
 2. Archive completed spec with `/opsx-archive`
 3. Document learnings for future reference
 
+### Git Commit Policy
+
+**Auto-commit on `/opsx-archive`:** When archiving a completed change, ALWAYS commit all implementation changes before archiving. Use conventional commit format:
+
+```
+feat(compose): migrate <ActivityName> to Compose + M3
+
+- Replace <OldDesign>.kt with <NewScreen>.kt composable
+- Rewrite activity to ComponentActivity + setContent
+- Remove old XML layout
+```
+
+Stage only files related to the archived change. Do NOT commit unrelated changes.
+
 #### ⚠️ Do NOT
 
 - Implement without a spec (use `/opsx-propose` first)
