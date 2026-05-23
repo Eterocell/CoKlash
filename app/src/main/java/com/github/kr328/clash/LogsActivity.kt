@@ -1,72 +1,64 @@
 package com.github.kr328.clash
 
+import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.lifecycleScope
 import com.github.kr328.clash.common.util.intent
 import com.github.kr328.clash.common.util.setFileName
-import com.github.kr328.clash.design.LogsDesign
+import com.github.kr328.clash.design.compose.LogsScreen
+import com.github.kr328.clash.design.compose.theme.CoKlashTheme
 import com.github.kr328.clash.design.model.LogFile
 import com.github.kr328.clash.util.logsDir
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.selects.select
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class LogsActivity : BaseActivity<LogsDesign>() {
-    override suspend fun main() {
-        val design = LogsDesign(this)
+class LogsActivity : BaseComposeActivity() {
+    private var logs by mutableStateOf<List<LogFile>>(emptyList())
 
-        setContentDesign(design)
-
-        while (isActive) {
-            select<Unit> {
-                events.onReceive {
-                    when (it) {
-                        Event.ActivityStart -> {
-                            val files =
-                                withContext(Dispatchers.IO) {
-                                    loadFiles()
-                                }
-
-                            design.patchLogs(files)
-                        }
-
-                        else -> {
-                            Unit
-                        }
-                    }
-                }
-                design.requests.onReceive {
-                    when (it) {
-                        LogsDesign.Request.StartLogcat -> {
-                            startActivity(LogcatActivity::class.intent)
-                            finish()
-                        }
-
-                        LogsDesign.Request.DeleteAll -> {
-                            if (design.requestDeleteAll()) {
-                                withContext(Dispatchers.IO) {
-                                    deleteAllLogs()
-                                }
-
-                                events.trySend(Event.ActivityStart)
-                            }
-                        }
-
-                        is LogsDesign.Request.OpenFile -> {
-                            startActivity(LogcatActivity::class.intent.setFileName(it.file.fileName))
-                        }
-                    }
-                }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            CoKlashTheme {
+                LogsScreen(
+                    onBackClick = { finish() },
+                    onStartLogcat = {
+                        startActivity(LogcatActivity::class.intent)
+                        finish()
+                    },
+                    onDeleteAll = { deleteAllLogs() },
+                    logs = logs,
+                    onLogFileClick = { file ->
+                        startActivity(LogcatActivity::class.intent.setFileName(file.fileName))
+                    },
+                )
             }
         }
     }
 
-    private fun loadFiles(): List<LogFile> {
-        val list = cacheDir.resolve("logs").listFiles()?.toList() ?: emptyList()
+    override fun onStart() {
+        super.onStart()
+        loadFiles()
+    }
 
-        return list.mapNotNull { LogFile.parseFromFileName(it.name) }
+    private fun loadFiles() {
+        lifecycleScope.launch {
+            logs = withContext(Dispatchers.IO) {
+                val list = cacheDir.resolve("logs").listFiles()?.toList() ?: emptyList()
+                list.mapNotNull { LogFile.parseFromFileName(it.name) }
+            }
+        }
     }
 
     private fun deleteAllLogs() {
-        logsDir.deleteRecursively()
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                logsDir.deleteRecursively()
+            }
+            loadFiles()
+        }
     }
 }
