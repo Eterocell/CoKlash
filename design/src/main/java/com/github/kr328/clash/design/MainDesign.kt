@@ -3,9 +3,11 @@ package com.github.kr328.clash.design
 import android.content.Context
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.ui.platform.ComposeView
 import com.github.kr328.clash.core.model.TunnelState
 import com.github.kr328.clash.core.util.trafficTotal
-import com.github.kr328.clash.design.databinding.DesignAboutBinding
+import com.github.kr328.clash.design.compose.AboutDialogContent
+import com.github.kr328.clash.design.compose.theme.CoKlashTheme
 import com.github.kr328.clash.design.databinding.DesignMainBinding
 import com.github.kr328.clash.design.util.layoutInflater
 import com.github.kr328.clash.design.util.resolveThemedColor
@@ -72,14 +74,17 @@ class MainDesign(
 
     suspend fun showAbout(versionName: String) {
         withContext(Dispatchers.Main) {
-            val binding =
-                DesignAboutBinding.inflate(context.layoutInflater).apply {
-                    this.versionName = versionName
+            val composeView = ComposeView(context).apply {
+                setContent {
+                    CoKlashTheme {
+                        AboutDialogContent(versionName = versionName)
+                    }
                 }
+            }
 
             AlertDialog
                 .Builder(context)
-                .setView(binding.root)
+                .setView(composeView)
                 .show()
         }
     }
