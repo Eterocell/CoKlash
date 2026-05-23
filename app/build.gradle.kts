@@ -7,9 +7,16 @@ import java.nio.file.StandardCopyOption
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.legacy.kapt)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android.namespace = "com.github.kr328.clash"
+
+android {
+    buildFeatures {
+        compose = true
+    }
+}
 
 dependencies {
     compileOnly(project(":hideapi"))
@@ -29,6 +36,7 @@ dependencies {
     implementation(libs.google.material)
     implementation(libs.quickie.bundled)
     implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.activity.compose)
 }
 
 tasks.getByName("clean", type = Delete::class) {
