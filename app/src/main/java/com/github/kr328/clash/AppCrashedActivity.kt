@@ -1,36 +1,45 @@
 package com.github.kr328.clash
 
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.lifecycleScope
 import com.github.kr328.clash.common.compat.getPackageInfoCompat
 import com.github.kr328.clash.common.compat.versionCodeCompat
 import com.github.kr328.clash.common.log.Log
-import com.github.kr328.clash.design.AppCrashedDesign
+import com.github.kr328.clash.design.compose.AppCrashedScreen
+import com.github.kr328.clash.design.compose.theme.CoKlashTheme
 import com.github.kr328.clash.log.SystemLogcat
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AppCrashedActivity : BaseActivity<AppCrashedDesign>() {
-    override suspend fun main() {
-        val design = AppCrashedDesign(this)
+class AppCrashedActivity : ComponentActivity() {
+    private var logs by mutableStateOf<String?>(null)
 
-        setContentDesign(design)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
 
-        val packageInfo =
-            withContext(Dispatchers.IO) {
+        setContent {
+            CoKlashTheme {
+                AppCrashedScreen(logs = logs)
+            }
+        }
+
+        lifecycleScope.launch {
+            val packageInfo = withContext(Dispatchers.IO) {
                 packageManager.getPackageInfoCompat(packageName, 0)
             }
+            Log.i("App version: versionName = ${packageInfo.versionName} versionCode = ${packageInfo.versionCodeCompat}")
 
-        Log.i("App version: versionName = ${packageInfo.versionName} versionCode = ${packageInfo.versionCodeCompat}")
-
-        val logs =
-            withContext(Dispatchers.IO) {
+            logs = withContext(Dispatchers.IO) {
                 SystemLogcat.dumpCrash()
             }
-
-        design.setAppLogs(logs)
-
-        while (isActive) {
-            events.receive()
         }
     }
 }
