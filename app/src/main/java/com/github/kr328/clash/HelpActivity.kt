@@ -1,20 +1,27 @@
 package com.github.kr328.clash
 
 import android.content.Intent
-import com.github.kr328.clash.design.HelpDesign
-import kotlinx.coroutines.isActive
+import android.net.Uri
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import com.github.kr328.clash.design.compose.HelpScreen
+import com.github.kr328.clash.design.compose.theme.CoKlashTheme
 
-class HelpActivity : BaseActivity<HelpDesign>() {
-    override suspend fun main() {
-        val design =
-            HelpDesign(this) {
-                startActivity(Intent(Intent.ACTION_VIEW).setData(it))
+class HelpActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
+        setContent {
+            CoKlashTheme {
+                HelpScreen(
+                    onBackClick = { finish() },
+                    onLinkClick = { uri ->
+                        startActivity(Intent(Intent.ACTION_VIEW).setData(uri))
+                    },
+                )
             }
-
-        setContentDesign(design)
-
-        while (isActive) {
-            events.receive()
         }
     }
 }
