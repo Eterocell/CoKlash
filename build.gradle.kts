@@ -136,7 +136,6 @@ subprojects {
         buildFeatures.apply {
             resValues = true
             buildConfig = true
-            viewBinding = name != "hideapi"
             dataBinding.apply {
                 enable = name != "hideapi"
             }
