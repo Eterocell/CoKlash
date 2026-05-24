@@ -1,128 +1,147 @@
 package com.github.kr328.clash
 
+import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.lifecycleScope
 import com.github.kr328.clash.common.util.intent
 import com.github.kr328.clash.core.Clash
 import com.github.kr328.clash.core.model.Proxy
-import com.github.kr328.clash.design.ProxyDesign
+import com.github.kr328.clash.core.model.TunnelState
+import com.github.kr328.clash.design.R
+import com.github.kr328.clash.design.compose.ProxyScreen
+import com.github.kr328.clash.design.compose.theme.CoKlashTheme
 import com.github.kr328.clash.design.model.ProxyState
 import com.github.kr328.clash.util.withClash
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.selects.select
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 
-class ProxyActivity : BaseActivity<ProxyDesign>() {
-    override suspend fun main() {
-        val mode = withClash { queryOverride(Clash.OverrideSlot.Session).mode }
-        val names = withClash { queryProxyGroupNames(uiStore.proxyExcludeNotSelectable) }
-        val states = List(names.size) { ProxyState("?") }
-        val unorderedStates = names.indices.associate { names[it] to states[it] }
-        val reloadLock = Semaphore(10)
+class ProxyActivity : BaseComposeActivity() {
+    private var groupNames = emptyList<String>()
+    private var states = emptyList<ProxyState>()
 
-        val design =
-            ProxyDesign(
-                this,
-                mode,
-                names,
-                uiStore,
-            )
+    private var groupProxies by mutableStateOf<Map<Int, List<Proxy>>>(emptyMap())
+    private var groupStates by mutableStateOf<Map<Int, ProxyState>>(emptyMap())
+    private var selectableGroups by mutableStateOf<Set<Int>>(emptySet())
+    private var urlTestingGroups by mutableStateOf<Set<Int>>(emptySet())
+    private var initialPage by mutableStateOf(0)
 
-        setContentDesign(design)
+    private val reloadLock = Semaphore(10)
 
-        design.requests.send(ProxyDesign.Request.ReloadAll)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        while (isActive) {
-            select<Unit> {
-                events.onReceive {
-                    when (it) {
-                        Event.ProfileLoaded -> {
-                            val newNames =
-                                withClash {
-                                    queryProxyGroupNames(uiStore.proxyExcludeNotSelectable)
-                                }
+        lifecycleScope.launch {
+            groupNames = withClash { queryProxyGroupNames(uiStore.proxyExcludeNotSelectable) }
+            states = List(groupNames.size) { ProxyState("?") }
+            initialPage = (groupNames.indexOf(uiStore.proxyLastGroup)).coerceAtLeast(0)
 
-                            if (newNames != names) {
-                                startActivity(ProxyActivity::class.intent)
+            reloadAll()
+        }
 
-                                finish()
-                            }
+        setContent {
+            CoKlashTheme {
+                ProxyScreen(
+                    onBackClick = { finish() },
+                    groupNames = groupNames,
+                    groupProxies = groupProxies,
+                    groupStates = groupStates,
+                    selectableGroups = selectableGroups,
+                    onProxySelect = { idx, name -> selectProxy(idx, name) },
+                    onUrlTest = { idx -> urlTest(idx) },
+                    urlTestingGroups = urlTestingGroups,
+                    onMenuClick = { showProxyMenu() },
+                    initialPage = initialPage,
+                    onPageChanged = { page ->
+                        if (page in groupNames.indices) {
+                            uiStore.proxyLastGroup = groupNames[page]
                         }
+                    },
+                )
+            }
+        }
+    }
 
-                        else -> {
-                            Unit
-                        }
-                    }
-                }
-                design.requests.onReceive {
-                    when (it) {
-                        ProxyDesign.Request.ReLaunch -> {
-                            startActivity(ProxyActivity::class.intent)
+    override fun onProfileLoaded() {
+        super.onProfileLoaded()
+        lifecycleScope.launch {
+            val newNames = withClash { queryProxyGroupNames(uiStore.proxyExcludeNotSelectable) }
+            if (newNames != groupNames) {
+                startActivity(ProxyActivity::class.intent)
+                finish()
+            }
+        }
+    }
 
-                            finish()
-                        }
+    private fun reloadAll() {
+        groupNames.indices.forEach { idx -> reloadGroup(idx) }
+    }
 
-                        ProxyDesign.Request.ReloadAll -> {
-                            names.indices.forEach { idx ->
-                                design.requests.trySend(ProxyDesign.Request.Reload(idx))
-                            }
-                        }
+    private fun reloadGroup(index: Int) {
+        lifecycleScope.launch {
+            val group = reloadLock.withPermit {
+                withClash { queryProxyGroup(groupNames[index], uiStore.proxySort) }
+            }
+            val state = states[index]
+            state.now = group.now
 
-                        is ProxyDesign.Request.Reload -> {
-                            launch {
-                                val group =
-                                    reloadLock.withPermit {
-                                        withClash {
-                                            queryProxyGroup(names[it.index], uiStore.proxySort)
-                                        }
-                                    }
-                                val state = states[it.index]
+            groupProxies = groupProxies + (index to group.proxies)
+            groupStates = groupStates + (index to state)
+            if (group.type == Proxy.Type.Selector) {
+                selectableGroups = selectableGroups + index
+            }
+            urlTestingGroups = urlTestingGroups - index
+        }
+    }
 
-                                state.now = group.now
+    private fun selectProxy(groupIndex: Int, proxyName: String) {
+        lifecycleScope.launch {
+            withClash { patchSelector(groupNames[groupIndex], proxyName) }
+            states[groupIndex].now = proxyName
+            groupStates = groupStates + (groupIndex to states[groupIndex])
+        }
+    }
 
-                                design.updateGroup(
-                                    it.index,
-                                    group.proxies,
-                                    group.type == Proxy.Type.Selector,
-                                    state,
-                                    unorderedStates,
-                                )
-                            }
-                        }
+    private fun urlTest(groupIndex: Int) {
+        urlTestingGroups = urlTestingGroups + groupIndex
+        lifecycleScope.launch {
+            withClash { healthCheck(groupNames[groupIndex]) }
+            reloadGroup(groupIndex)
+        }
+    }
 
-                        is ProxyDesign.Request.Select -> {
-                            withClash {
-                                patchSelector(names[it.index], it.name)
+    private fun showProxyMenu() {
+        val items = mutableListOf<Pair<String, () -> Unit>>()
+        items.add(getString(R.string.mode_switch_tips) to {})
 
-                                states[it.index].now = it.name
-                            }
+        val modes = listOf(
+            TunnelState.Mode.Direct to getString(R.string.direct_mode),
+            TunnelState.Mode.Global to getString(R.string.global_mode),
+            TunnelState.Mode.Rule to getString(R.string.rule_mode),
+        )
+        modes.forEach { (mode, label) ->
+            items.add(label to { patchMode(mode) })
+        }
 
-                            design.requestRedrawVisible()
-                        }
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.mode)
+            .setItems(modes.map { it.second }.toTypedArray()) { _, which ->
+                patchMode(modes[which].first)
+            }
+            .show()
+    }
 
-                        is ProxyDesign.Request.UrlTest -> {
-                            launch {
-                                withClash {
-                                    healthCheck(names[it.index])
-                                }
-
-                                design.requests.send(ProxyDesign.Request.Reload(it.index))
-                            }
-                        }
-
-                        is ProxyDesign.Request.PatchMode -> {
-                            design.showModeSwitchTips()
-
-                            withClash {
-                                val o = queryOverride(Clash.OverrideSlot.Session)
-
-                                o.mode = it.mode
-
-                                patchOverride(Clash.OverrideSlot.Session, o)
-                            }
-                        }
-                    }
-                }
+    private fun patchMode(mode: TunnelState.Mode) {
+        Toast.makeText(this, R.string.mode_switch_tips, Toast.LENGTH_LONG).show()
+        lifecycleScope.launch {
+            withClash {
+                val o = queryOverride(Clash.OverrideSlot.Session)
+                o.mode = mode
+                patchOverride(Clash.OverrideSlot.Session, o)
             }
         }
     }
