@@ -14,6 +14,8 @@ recyclerview = "1.4.0"
 viewpager = "1.1.0"
 material = "1.14.0"
 composeBom = "2026.05.01"
+navigation = "2.9.0"
+lifecycle = "2.9.1"
 serialization = "1.11.0"
 kaidl = "1.15"
 room = "2.8.4"
@@ -51,6 +53,8 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
 gradle-plugin-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 gradle-plugin-spotless = { group = "com.diffplug.spotless", name = "spotless-plugin-gradle", version.ref = "spotless" }
