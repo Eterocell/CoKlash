@@ -52,7 +52,7 @@ class ExternalControlActivity :
                                 patch(it, name, url, intervalMs)
                             }
                         }
-                    startActivity(PropertiesActivity::class.intent.setUUID(uuid))
+                    startActivity(MainActivity::class.intent.setUUID(uuid))
                     finish()
                 }
                 return

@@ -53,6 +53,11 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="coklash" />
+            </intent-filter>
         </activity>
         <activity-alias
             android:name=".MainActivityAlias"
@@ -108,81 +113,7 @@
             android:exported="false"
             android:label="@string/application_crashed"
             android:launchMode="singleTask" />
-        <activity
-            android:name=".ProfilesActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:label="@string/profiles" />
-        <activity
-            android:name=".NewProfileActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:label="@string/create_profile" />
-        <activity
-            android:name=".PropertiesActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:label="@string/profile" />
-        <activity
-            android:name=".ProxyActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:label="@string/proxy" />
-        <activity
-            android:name=".ProvidersActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:label="@string/providers" />
-        <activity
-            android:name=".LogsActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:label="@string/logs" />
-        <activity
-            android:name=".LogcatActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:label="@string/logcat" />
-        <activity
-            android:name=".SettingsActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:label="@string/settings" />
-        <activity
-            android:name=".NetworkSettingsActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:label="@string/network" />
-        <activity
-            android:name=".AppSettingsActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:label="@string/app" />
-        <activity
-            android:name=".OverrideSettingsActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:label="@string/override" />
-        <activity
-            android:name=".MetaFeatureSettingsActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:label="@string/meta_features" />
-        <activity
-            android:name=".AccessControlActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:label="@string/access_control_packages" />
-        <activity
-            android:name=".HelpActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:label="@string/help" />
-        <activity
-            android:name=".FilesActivity"
-            android:configChanges="uiMode"
-            android:exported="false"
-            android:label="@string/files" />
+
 
         <service
             android:name=".LogcatService"

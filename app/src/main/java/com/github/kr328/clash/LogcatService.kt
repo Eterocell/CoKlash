@@ -157,7 +157,7 @@ class LogcatService :
                     PendingIntent.getActivity(
                         this,
                         R.id.nf_logcat_status,
-                        LogcatActivity::class
+                        MainActivity::class
                             .intent
                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP),
                         pendingIntentFlags(PendingIntent.FLAG_UPDATE_CURRENT),

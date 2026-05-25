@@ -7,5 +7,4 @@ object Components {
     private const val COMPONENTS_PACKAGE_NAME = "com.github.kr328.clash"
 
     val MAIN_ACTIVITY = ComponentName(packageName, "$COMPONENTS_PACKAGE_NAME.MainActivity")
-    val PROPERTIES_ACTIVITY = ComponentName(packageName, "$COMPONENTS_PACKAGE_NAME.PropertiesActivity")
 }
