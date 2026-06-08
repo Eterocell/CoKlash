@@ -62,9 +62,9 @@ subprojects {
     configureAndroidCommon {
 
         ndkVersion = "29.0.14206865"
-        buildToolsVersion = "36.1.0"
+        buildToolsVersion = "37.0.0"
         compileSdk {
-            version = release(36)
+            version = release(37)
         }
 
         defaultConfig.apply {
@@ -156,7 +156,7 @@ subprojects {
         defaultConfig {
             applicationId = "com.eterocell.mihomoforandroid"
 
-            targetSdk = 36
+            targetSdk = 37
 
             versionName = verName
             versionCode = verCode.toInt()
