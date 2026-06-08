@@ -1,10 +1,10 @@
 [versions]
 android-desugar-jdk-libs = "2.1.5"
 agp = "9.2.1"
-kotlin = "2.3.21"
-ksp = "2.3.8"
+kotlin = "2.4.0"
+ksp = "2.3.9"
 coroutine = "1.11.0"
-coreKtx = "1.18.0"
+coreKtx = "1.19.0"
 activity = "1.13.0"
 fragment = "1.8.9"
 appcompat = "1.7.1"
@@ -20,7 +20,7 @@ serialization = "1.11.0"
 kaidl = "1.15"
 room = "2.8.4"
 multiprocess = "1.0.0"
-spotless = "8.5.1"
+spotless = "8.6.0"
 quickie = "1.12.0"
 
 [libraries]

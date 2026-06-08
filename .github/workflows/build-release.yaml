@@ -120,7 +120,7 @@ jobs:
         run: ./gradlew --no-daemon app:assembleAlphaRelease
 
       - name: Tag Repo
-        uses: richardsimko/update-tag@v1
+        uses: richardsimko/update-tag@v2
         with:
           tag_name: ${{ inputs.release-tag }}
         env:

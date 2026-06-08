@@ -89,7 +89,7 @@ jobs:
           delete_release: true
 
       - name: Tag Repo
-        uses: richardsimko/update-tag@v1
+        uses: richardsimko/update-tag@v2
         with:
           tag_name: Prerelease-alpha
         env:
