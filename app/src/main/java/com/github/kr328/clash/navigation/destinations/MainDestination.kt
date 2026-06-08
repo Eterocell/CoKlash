@@ -3,6 +3,9 @@ package com.github.kr328.clash.navigation.destinations
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -12,12 +15,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.github.kr328.clash.AppEvent
 import com.github.kr328.clash.AppViewModel
 import com.github.kr328.clash.LogcatService
+import com.github.kr328.clash.common.compat.getPackageInfoCompat
 import com.github.kr328.clash.core.model.TunnelState
 import com.github.kr328.clash.core.util.trafficTotal
+import com.github.kr328.clash.design.compose.AboutDialogContent
 import com.github.kr328.clash.design.compose.MainScreen
 import com.github.kr328.clash.navigation.Help
 import com.github.kr328.clash.navigation.Logcat
@@ -45,6 +51,7 @@ fun MainDestination(navController: NavHostController, appViewModel: AppViewModel
     var mode by remember { mutableStateOf("") }
     var forwarded by remember { mutableStateOf("") }
     var hasProviders by remember { mutableStateOf(false) }
+    var showAboutDialog by remember { mutableStateOf(false) }
 
     val vpnPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult(),
@@ -131,6 +138,21 @@ fun MainDestination(navController: NavHostController, appViewModel: AppViewModel
         },
         onSettingsClick = { navController.navigate(Settings) },
         onHelpClick = { navController.navigate(Help) },
-        onAboutClick = { /* About dialog handled in screen */ },
+        onAboutClick = { showAboutDialog = true },
     )
+
+    if (showAboutDialog) {
+        val versionName = remember {
+            context.packageManager.getPackageInfoCompat(context.packageName, 0).versionName ?: ""
+        }
+        AlertDialog(
+            onDismissRequest = { showAboutDialog = false },
+            confirmButton = {
+                TextButton(onClick = { showAboutDialog = false }) {
+                    Text(stringResource(android.R.string.ok))
+                }
+            },
+            text = { AboutDialogContent(versionName = versionName) },
+        )
+    }
 }
