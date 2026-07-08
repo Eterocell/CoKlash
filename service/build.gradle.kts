@@ -20,7 +20,4 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.kaidl.runtime)
     implementation(libs.rikkax.multiprocess)
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp)
-    implementation(libs.okhttp.logging.interceptor)
 }

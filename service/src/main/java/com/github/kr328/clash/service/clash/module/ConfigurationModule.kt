@@ -65,6 +65,8 @@ class ConfigurationModule(
                     ImportedDao().queryByUUID(current)
                         ?: throw NullPointerException("No profile selected")
 
+                Clash.setAgeSecretKey(active.ageSecretKey?.takeIf { it.isNotBlank() })
+
                 Clash.load(service.importedDir.resolve(active.uuid.toString())).await()
 
                 val remove =

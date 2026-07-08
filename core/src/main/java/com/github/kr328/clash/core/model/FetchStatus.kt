@@ -11,10 +11,16 @@ data class FetchStatus(
     val args: List<String>,
     val progress: Int,
     val max: Int,
+    val subUpload: Long? = null,
+    val subDownload: Long? = null,
+    val subTotal: Long? = null,
+    val subExpire: Long? = null,
+    val subUpdateInterval: Long? = null,
 ) : Parcelable {
     enum class Action {
         FetchConfiguration,
         FetchProviders,
+        SubscriptionInfo,
         Verifying,
     }
 

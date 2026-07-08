@@ -6,8 +6,20 @@ import com.github.kr328.clash.core.model.ConfigurationOverride
 import com.github.kr328.clash.core.model.LogMessage
 import com.github.kr328.clash.core.model.TunnelState
 import com.github.kr328.clash.design.databinding.DesignSettingsOverideBinding
-import com.github.kr328.clash.design.preference.*
-import com.github.kr328.clash.design.util.*
+import com.github.kr328.clash.design.preference.NullableTextAdapter
+import com.github.kr328.clash.design.preference.OnChangedListener
+import com.github.kr328.clash.design.preference.Preference
+import com.github.kr328.clash.design.preference.TextAdapter
+import com.github.kr328.clash.design.preference.category
+import com.github.kr328.clash.design.preference.editableText
+import com.github.kr328.clash.design.preference.editableTextList
+import com.github.kr328.clash.design.preference.editableTextMap
+import com.github.kr328.clash.design.preference.preferenceScreen
+import com.github.kr328.clash.design.preference.selectableList
+import com.github.kr328.clash.design.util.applyFrom
+import com.github.kr328.clash.design.util.bindAppBarElevation
+import com.github.kr328.clash.design.util.layoutInflater
+import com.github.kr328.clash.design.util.root
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
@@ -369,6 +381,163 @@ class OverrideSettingsDesign(
                             R.string.dont_modify,
                             R.string.blacklist,
                             R.string.whitelist,
+                        ),
+                    title = R.string.fakeip_filter_mode,
+                    configure = dnsDependencies::add,
+                )
+
+                selectableList(
+                    value = configuration.dns.fallbackFilter::geoIp,
+                    values = booleanValues,
+                    valuesText = booleanValuesText,
+                    title = R.string.geoip_fallback,
+                    configure = dnsDependencies::add,
+                )
+
+                editableText(
+                    value = configuration.dns.fallbackFilter::geoIpCode,
+                    adapter = NullableTextAdapter.String,
+                    title = R.string.geoip_fallback_code,
+                    placeholder = R.string.dont_modify,
+                    empty = R.string.raw_cn,
+                    configure = dnsDependencies::add,
+                )
+
+                editableTextList(
+                    value = configuration.dns.fallbackFilter::domain,
+                    adapter = TextAdapter.String,
+                    title = R.string.domain_fallback,
+                    placeholder = R.string.dont_modify,
+                    configure = dnsDependencies::add,
+                )
+
+                editableTextList(
+                    value = configuration.dns.fallbackFilter::ipcidr,
+                    adapter = TextAdapter.String,
+                    title = R.string.ipcidr_fallback,
+                    placeholder = R.string.dont_modify,
+                    configure = dnsDependencies::add,
+                )
+
+                editableTextMap(
+                    value = configuration.dns::nameserverPolicy,
+                    keyAdapter = TextAdapter.String,
+                    valueAdapter = TextAdapter.String,
+                    title = R.string.name_server_policy,
+                    placeholder = R.string.dont_modify,
+                    configure = dnsDependencies::add,
+                )
+
+                dns.listener?.onChanged()
+
+                selectableList(
+                    value = configuration.dns::preferH3,
+                    values = booleanValues,
+                    valuesText = booleanValuesText,
+                    title = R.string.prefer_h3,
+                    configure = dnsDependencies::add,
+                )
+
+                editableText(
+                    value = configuration.dns::listen,
+                    adapter = NullableTextAdapter.String,
+                    title = R.string.listen,
+                    placeholder = R.string.dont_modify,
+                    empty = R.string.disabled,
+                    configure = dnsDependencies::add,
+                )
+
+                selectableList(
+                    value = configuration.app::appendSystemDns,
+                    values = booleanValues,
+                    valuesText = booleanValuesText,
+                    title = R.string.append_system_dns,
+                    configure = dnsDependencies::add,
+                )
+
+                selectableList(
+                    value = configuration.dns::ipv6,
+                    values = booleanValues,
+                    valuesText = booleanValuesText,
+                    title = R.string.ipv6,
+                    configure = dnsDependencies::add,
+                )
+
+                selectableList(
+                    value = configuration.dns::useHosts,
+                    values = booleanValues,
+                    valuesText = booleanValuesText,
+                    title = R.string.use_hosts,
+                    configure = dnsDependencies::add,
+                )
+
+                selectableList(
+                    value = configuration.dns::enhancedMode,
+                    values =
+                        arrayOf(
+                            null,
+                            ConfigurationOverride.DnsEnhancedMode.None,
+                            ConfigurationOverride.DnsEnhancedMode.FakeIp,
+                            ConfigurationOverride.DnsEnhancedMode.Mapping,
+                        ),
+                    valuesText =
+                        arrayOf(
+                            R.string.dont_modify,
+                            R.string.disabled,
+                            R.string.fakeip,
+                            R.string.mapping,
+                        ),
+                    title = R.string.enhanced_mode,
+                    configure = dnsDependencies::add,
+                )
+
+                editableTextList(
+                    value = configuration.dns::nameServer,
+                    adapter = TextAdapter.String,
+                    title = R.string.name_server,
+                    placeholder = R.string.dont_modify,
+                    configure = dnsDependencies::add,
+                )
+
+                editableTextList(
+                    value = configuration.dns::fallback,
+                    adapter = TextAdapter.String,
+                    title = R.string.fallback,
+                    placeholder = R.string.dont_modify,
+                    configure = dnsDependencies::add,
+                )
+
+                editableTextList(
+                    value = configuration.dns::defaultServer,
+                    adapter = TextAdapter.String,
+                    title = R.string.default_name_server,
+                    placeholder = R.string.dont_modify,
+                    configure = dnsDependencies::add,
+                )
+
+                editableTextList(
+                    value = configuration.dns::fakeIpFilter,
+                    adapter = TextAdapter.String,
+                    title = R.string.fakeip_filter,
+                    placeholder = R.string.dont_modify,
+                    configure = dnsDependencies::add,
+                )
+
+                selectableList(
+                    value = configuration.dns::fakeIPFilterMode,
+                    values =
+                        arrayOf(
+                            null,
+                            ConfigurationOverride.FilterMode.BlackList,
+                            ConfigurationOverride.FilterMode.WhiteList,
+                            ConfigurationOverride.FilterMode.Rule,
+                        ),
+                    valuesText =
+                        arrayOf(
+                            R.string.dont_modify,
+                            R.string.blacklist,
+                            R.string.whitelist,
+                            R.string.rule,
                         ),
                     title = R.string.fakeip_filter_mode,
                     configure = dnsDependencies::add,

@@ -152,6 +152,7 @@ class Picker(
                 imported.source,
                 imported.interval,
                 0, 0, 0, 0,
+                ageSecretKey = imported.ageSecretKey,
             ),
         )
 

@@ -49,7 +49,7 @@ class ExternalControlActivity :
                                     .toMillis(updateInterval)
 
                             create(type, name).also {
-                                patch(it, name, url, intervalMs)
+                                patch(it, name, url, intervalMs, null)
                             }
                         }
                     startActivity(PropertiesActivity::class.intent.setUUID(uuid))

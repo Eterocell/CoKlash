@@ -83,7 +83,7 @@ class ProxyActivity : BaseActivity<ProxyDesign>() {
                                 design.updateGroup(
                                     it.index,
                                     group.proxies,
-                                    group.type == Proxy.Type.Selector,
+                                    group.type == "Selector",
                                     state,
                                     unorderedStates,
                                 )
