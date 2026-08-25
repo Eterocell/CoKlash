@@ -7,8 +7,7 @@ import android.widget.Toast
 import com.github.kr328.clash.common.constants.Intents
 import com.github.kr328.clash.common.util.intent
 import com.github.kr328.clash.common.util.setUUID
-import com.github.kr328.clash.design.R
-import com.github.kr328.clash.remote.Remote
+import com.github.kr328.clash.remote.StatusClient
 import com.github.kr328.clash.service.model.Profile
 import com.github.kr328.clash.util.startClashService
 import com.github.kr328.clash.util.stopClashService
@@ -59,7 +58,7 @@ class ExternalControlActivity :
             }
 
             Intents.ACTION_TOGGLE_CLASH -> {
-                if (Remote.broadcasts.clashRunning) {
+                if (isClashRunning()) {
                     stopClash()
                 } else {
                     startClash()
@@ -67,23 +66,23 @@ class ExternalControlActivity :
             }
 
             Intents.ACTION_START_CLASH -> {
-                if (!Remote.broadcasts.clashRunning) {
-                    startClash()
-                } else {
+                if (isClashRunning()) {
                     Toast.makeText(this, R.string.external_control_started, Toast.LENGTH_LONG).show()
+                } else {
+                    startClash()
                 }
             }
 
             Intents.ACTION_STOP_CLASH -> {
-                if (Remote.broadcasts.clashRunning) {
-                    stopClash()
-                } else {
-                    Toast.makeText(this, R.string.external_control_stopped, Toast.LENGTH_LONG).show()
-                }
+                stopClash()
             }
         }
 
         return finish()
+    }
+
+    private fun isClashRunning(): Boolean {
+        return StatusClient(this).currentProfile() != null
     }
 
     private fun startClash() {
