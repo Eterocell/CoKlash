@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.github.kr328.clash.common.constants.Intents
 import com.github.kr328.clash.common.util.intent
 import com.github.kr328.clash.common.util.setUUID
+import com.github.kr328.clash.design.R
 import com.github.kr328.clash.remote.StatusClient
 import com.github.kr328.clash.service.model.Profile
 import com.github.kr328.clash.util.startClashService
@@ -81,9 +82,7 @@ class ExternalControlActivity :
         return finish()
     }
 
-    private fun isClashRunning(): Boolean {
-        return StatusClient(this).currentProfile() != null
-    }
+    private fun isClashRunning(): Boolean = StatusClient(this).currentProfile() != null
 
     private fun startClash() {
 //        if (currentProfile == null) {
