@@ -4,7 +4,13 @@ import android.content.Context
 import android.os.Build
 import android.view.View
 import com.github.kr328.clash.design.databinding.DesignSettingsCommonBinding
-import com.github.kr328.clash.design.preference.*
+import com.github.kr328.clash.design.preference.OnChangedListener
+import com.github.kr328.clash.design.preference.Preference
+import com.github.kr328.clash.design.preference.category
+import com.github.kr328.clash.design.preference.clickable
+import com.github.kr328.clash.design.preference.preferenceScreen
+import com.github.kr328.clash.design.preference.selectableList
+import com.github.kr328.clash.design.preference.switch
 import com.github.kr328.clash.design.store.UiStore
 import com.github.kr328.clash.design.ui.ToastDuration
 import com.github.kr328.clash.design.util.applyFrom
@@ -67,10 +73,23 @@ class NetworkSettingsDesign(
                     configure = vpnDependencies::add,
                 )
 
-                switch(
-                    value = srvStore::dnsHijacking,
-                    title = R.string.dns_hijacking,
-                    summary = R.string.dns_hijacking_summary,
+                selectableList(
+                    value = srvStore::tunStackMode,
+                    values =
+                        arrayOf(
+                            "system",
+                            "gvisor",
+                            "mixed",
+                            "mips",
+                        ),
+                    valuesText =
+                        arrayOf(
+                            R.string.tun_stack_system,
+                            R.string.tun_stack_gvisor,
+                            R.string.tun_stack_mixed,
+                            R.string.tun_stack_mips,
+                        ),
+                    title = R.string.tun_stack_mode,
                     configure = vpnDependencies::add,
                 )
 

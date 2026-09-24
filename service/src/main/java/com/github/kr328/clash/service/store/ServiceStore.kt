@@ -61,7 +61,7 @@ class ServiceStore(
 
     var tunStackMode by store.string(
         key = "tun_stack_mode",
-        defaultValue = "system",
+        defaultValue = "mips",
     )
 
     var dynamicNotification by store.boolean(
