@@ -70,8 +70,19 @@ subprojects {
         defaultConfig.apply {
             minSdk = 23
 
-            resValue("string", "release_name", "v$verName")
-            resValue("integer", "release_code", verCode)
+            project.name.let { name ->
+                namespace = if (name == "app") "com.github.kr328.clash"
+                else "com.github.kr328.clash.$name"
+            }
+
+            minSdk = 21
+            targetSdk = 35
+
+            versionName = "2.11.36"
+            versionCode = 211036
+
+            resValue("string", "release_name", "v$versionName")
+            resValue("integer", "release_code", "$versionCode")
 
             ndk {
                 abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
